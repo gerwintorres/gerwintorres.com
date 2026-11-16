@@ -27,6 +27,8 @@ export const ui = {
     "cta.cv": "Download CV",
     "cta.email": "Send an email",
     "date.present": "Present",
+    "hero.next": "Next",
+    "hero.viewProject": "View project",
   },
   es: {
     "a11y.skip": "Saltar al contenido",
@@ -45,6 +47,8 @@ export const ui = {
     "cta.cv": "Descargar CV",
     "cta.email": "Enviar un correo",
     "date.present": "Actualidad",
+    "hero.next": "Siguiente",
+    "hero.viewProject": "Ver proyecto",
   },
 } as const satisfies Record<Lang, Record<string, string>>;
 

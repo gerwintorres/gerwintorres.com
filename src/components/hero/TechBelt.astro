@@ -1,0 +1,119 @@
+---
+import {
+  siDocker,
+  siFastapi,
+  siGit,
+  siGithubactions,
+  siGooglecloud,
+  siLinux,
+  siMysql,
+  siPandas,
+  siPostgresql,
+  siPytest,
+  siPython,
+  siSqlalchemy,
+  siStreamlit,
+  siTraefikproxy,
+  type SimpleIcon,
+} from "simple-icons";
+import { hero } from "../../data/content";
+
+const logos: Record<string, SimpleIcon> = {
+  Python: siPython,
+  FastAPI: siFastapi,
+  PostgreSQL: siPostgresql,
+  MySQL: siMysql,
+  SQLAlchemy: siSqlalchemy,
+  pandas: siPandas,
+  Docker: siDocker,
+  Linux: siLinux,
+  Traefik: siTraefikproxy,
+  "GitHub Actions": siGithubactions,
+  "Google Cloud": siGooglecloud,
+  pytest: siPytest,
+  Git: siGit,
+  Streamlit: siStreamlit,
+};
+
+const items = hero.belt.map((name) => ({ name, icon: logos[name] }));
+---
+
+<div class="belt" aria-label="Tech stack">
+  {[false, true].map((copy) => (
+    <ul class="belt-list" role="list" aria-hidden={copy ? "true" : undefined}>
+      {items.map(({ name, icon }) => (
+        <li class="belt-item" style={icon ? `--brand: #${icon.hex}` : undefined}>
+          {icon && (
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <path d={icon.path} fill="currentColor" />
+            </svg>
+          )}
+          <span>{name}</span>
+        </li>
+      ))}
+    </ul>
+  ))}
+</div>
+
+<style>
+  .belt {
+    display: flex;
+    overflow: hidden;
+    border-block: 1px solid var(--line);
+    background: var(--surface-2);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .belt-list {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--space-8);
+    margin: 0;
+    padding: var(--space-6) var(--space-4);
+    list-style: none;
+    animation: slide 45s linear infinite;
+  }
+
+  .belt:hover .belt-list {
+    animation-play-state: paused;
+  }
+
+  .belt-item {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .belt-item:hover {
+    color: var(--text);
+  }
+
+  .belt-item:hover svg {
+    color: var(--brand, currentColor);
+  }
+
+  @keyframes slide {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .belt {
+      overflow-x: auto;
+    }
+
+    .belt-list {
+      animation: none;
+    }
+
+    .belt-list[aria-hidden] {
+      display: none;
+    }
+  }
+</style>
