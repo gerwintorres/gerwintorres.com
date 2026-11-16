@@ -272,6 +272,8 @@ const [middleName, lastName] = profile.lastName.split(" ");
     transform: translateX(-50%);
     pointer-events: none;
     user-select: none;
+    /* Softens the bottom edge of the photo without reaching the hands. */
+    mask-image: linear-gradient(to bottom, #000 93%, transparent);
   }
 
   .cards {
