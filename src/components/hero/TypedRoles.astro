@@ -30,8 +30,18 @@ const roles = hero.roles.map((role) => tx(role, Astro.props.lang));
     let index = 0;
     let length = roles[0]?.length ?? 0;
     let deleting = true;
+    let visible = true;
+
+    // No typing while the card is off screen: nobody sees it and it keeps the CPU busy.
+    new IntersectionObserver(([entry]) => {
+      visible = entry?.isIntersecting ?? false;
+    }).observe(target);
 
     const tick = (): void => {
+      if (!visible || document.hidden) {
+        window.setTimeout(tick, 500);
+        return;
+      }
       const word = roles[index] ?? "";
       length += deleting ? -1 : 1;
       target.textContent = word.slice(0, length);
