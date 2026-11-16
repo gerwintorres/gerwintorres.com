@@ -2,7 +2,7 @@
 import Chips from "../ui/Chips.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import { experience, sections } from "../../data/content";
-import { tx, useTranslations, type Lang } from "../../i18n/ui";
+import { tx, useTranslations, type Lang, type Localized } from "../../i18n/ui";
 
 interface Props {
   lang: Lang;
@@ -17,6 +17,58 @@ const month = (ym: string): string => {
     new Date(y ?? 2000, (m ?? 1) - 1),
   );
 };
+const years = (start: string, end: string | null): string => {
+  const from = year(start);
+  const to = end ? year(end) : t("date.present");
+  return from === to ? from : `${from} – ${to}`;
+};
+
+/** One tab per company, and one per client inside a company. */
+interface Entry {
+  id: string;
+  group: string;
+  isClient: boolean;
+  tab: string;
+  title: string;
+  at: string;
+  start: string;
+  end: string | null;
+  meta: Localized[];
+  summary: Localized;
+  highlights: Localized[];
+  stack: string[];
+}
+
+const entries: Entry[] = experience.flatMap((job) => [
+  {
+    id: job.id,
+    group: job.id,
+    isClient: false,
+    tab: job.company,
+    title: tx(job.role, lang),
+    at: job.company,
+    start: job.start,
+    end: job.end,
+    meta: [job.type, job.location],
+    summary: job.summary,
+    highlights: job.highlights,
+    stack: job.stack,
+  },
+  ...(job.clients ?? []).map((client) => ({
+    id: `${job.id}-${client.id}`,
+    group: job.id,
+    isClient: true,
+    tab: tx(client.tab, lang),
+    title: tx(client.name, lang),
+    at: job.company,
+    start: client.start,
+    end: client.end,
+    meta: [client.role, client.type, client.location].filter((m): m is Localized => !!m),
+    summary: client.summary,
+    highlights: client.highlights,
+    stack: client.stack,
+  })),
+]);
 ---
 
 <section class="section alt" id="experience" aria-labelledby="experience-title">
@@ -29,49 +81,81 @@ const month = (ym: string): string => {
 
     <div class="xp reveal">
       <div class="tabs" role="tablist" aria-label={tx(sections.experience.eyebrow, lang)}>
-        {experience.map((item, i) => (
-          <button
-            class="tab"
-            type="button"
-            role="tab"
-            id={`xp-tab-${i}`}
-            aria-controls={`xp-panel-${i}`}
-            aria-selected={i === 0 ? "true" : "false"}
-            tabindex={i === 0 ? 0 : -1}
-          >
-            <span class="tab-name">{item.company}</span>
-            <span class="tab-years mono">
-              {year(item.start)} – {item.end ? year(item.end) : t("date.present")}
-            </span>
-          </button>
-        ))}
+        {experience.map((job) => {
+          const own = entries.filter((e) => e.group === job.id);
+          const [parent, ...clients] = own;
+          const open = job.id === entries[0]?.group;
+          return (
+            <div class:list={["group", { "is-open": open }]} data-group={job.id}>
+              {parent && (
+                <button
+                  class="tab"
+                  type="button"
+                  role="tab"
+                  id={`xp-tab-${parent.id}`}
+                  aria-controls={`xp-panel-${parent.id}`}
+                  aria-selected={parent.id === entries[0]?.id ? "true" : "false"}
+                  tabindex={parent.id === entries[0]?.id ? 0 : -1}
+                >
+                  <span class="tab-name">{parent.tab}</span>
+                  <span class="tab-years mono">{years(parent.start, parent.end)}</span>
+                </button>
+              )}
+              {clients.length > 0 && (
+                <div class="subtabs" role="presentation">
+                  {clients.map((client) => (
+                    <button
+                      class="tab subtab"
+                      type="button"
+                      role="tab"
+                      id={`xp-tab-${client.id}`}
+                      aria-controls={`xp-panel-${client.id}`}
+                      aria-selected="false"
+                      tabindex="-1"
+                    >
+                      <span class="tab-name">{client.tab}</span>
+                      <span class="tab-years mono">{years(client.start, client.end)}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      {experience.map((item, i) => (
+      {entries.map((entry, i) => (
         <article
           class="panel"
           role="tabpanel"
-          id={`xp-panel-${i}`}
-          aria-labelledby={`xp-tab-${i}`}
+          id={`xp-panel-${entry.id}`}
+          aria-labelledby={`xp-tab-${entry.id}`}
           hidden={i !== 0}
         >
+          {entry.isClient && (
+            <p class="client-of mono">
+              {t("xp.client")} {entry.at}
+            </p>
+          )}
           <h3>
-            {tx(item.role, lang)} <span class="at">@ {item.company}</span>
+            {entry.title}
+            {!entry.isClient && <span class="at"> @ {entry.at}</span>}
           </h3>
           <p class="meta">
             <span class="mono">
-              {month(item.start)} – {item.end ? month(item.end) : t("date.present")}
+              {month(entry.start)} – {entry.end ? month(entry.end) : t("date.present")}
             </span>
-            <span>{tx(item.type, lang)}</span>
-            <span>{tx(item.location, lang)}</span>
+            {entry.meta.map((m) => (
+              <span>{tx(m, lang)}</span>
+            ))}
           </p>
-          <p class="summary">{tx(item.summary, lang)}</p>
+          <p class="summary">{tx(entry.summary, lang)}</p>
           <ul class="highlights" role="list">
-            {item.highlights.map((highlight) => (
+            {entry.highlights.map((highlight) => (
               <li>{tx(highlight, lang)}</li>
             ))}
           </ul>
-          <Chips items={item.stack} />
+          <Chips items={entry.stack} />
         </article>
       ))}
     </div>
@@ -79,36 +163,46 @@ const month = (ym: string): string => {
 </section>
 
 <script>
-  // Accessible tabs: click or arrow keys move between companies.
+  // Accessible tabs. A company's clients unfold under it while the company or one of them is selected.
   document.querySelectorAll<HTMLElement>(".xp").forEach((root) => {
     const tabs = [...root.querySelectorAll<HTMLButtonElement>("[role=tab]")];
+    const groups = [...root.querySelectorAll<HTMLElement>(".group")];
 
-    function select(index: number, focus = false): void {
-      tabs.forEach((tab, i) => {
-        const selected = i === index;
-        tab.setAttribute("aria-selected", String(selected));
-        tab.tabIndex = selected ? 0 : -1;
-        const panel = document.getElementById(tab.getAttribute("aria-controls") ?? "");
-        if (panel) panel.hidden = !selected;
-      });
-      if (focus) tabs[index]?.focus();
+    function visibleTabs(): HTMLButtonElement[] {
+      return tabs.filter((tab) => tab.offsetParent !== null);
     }
 
-    tabs.forEach((tab, i) => {
-      tab.addEventListener("click", () => select(i));
+    function select(tab: HTMLButtonElement, focus = false): void {
+      tabs.forEach((other) => {
+        const selected = other === tab;
+        other.setAttribute("aria-selected", String(selected));
+        other.tabIndex = selected ? 0 : -1;
+        const panel = document.getElementById(other.getAttribute("aria-controls") ?? "");
+        if (panel) panel.hidden = !selected;
+      });
+      const group = tab.closest<HTMLElement>(".group");
+      groups.forEach((g) => g.classList.toggle("is-open", g === group));
+      if (focus) tab.focus();
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => select(tab));
       tab.addEventListener("keydown", (event) => {
-        const keys: Record<string, number> = {
+        const visible = visibleTabs();
+        const i = visible.indexOf(tab);
+        const moves: Record<string, number> = {
           ArrowDown: i + 1,
           ArrowRight: i + 1,
           ArrowUp: i - 1,
           ArrowLeft: i - 1,
           Home: 0,
-          End: tabs.length - 1,
+          End: visible.length - 1,
         };
-        const next = keys[event.key];
+        const next = moves[event.key];
         if (next === undefined) return;
         event.preventDefault();
-        select((next + tabs.length) % tabs.length, true);
+        const target = visible[(next + visible.length) % visible.length];
+        if (target) select(target, true);
       });
     });
   });
@@ -117,7 +211,7 @@ const month = (ym: string): string => {
 <style>
   .xp {
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 270px 1fr;
     gap: var(--space-8);
     align-items: start;
   }
@@ -131,9 +225,15 @@ const month = (ym: string): string => {
     background: var(--surface);
   }
 
+  .group {
+    display: grid;
+    gap: var(--space-1);
+  }
+
   .tab {
     display: grid;
     gap: 2px;
+    width: 100%;
     padding: var(--space-3) var(--space-4);
     border: 0;
     border-radius: var(--radius-sm);
@@ -163,6 +263,27 @@ const month = (ym: string): string => {
     opacity: 0.75;
   }
 
+  .subtabs {
+    display: none;
+    gap: var(--space-1);
+    margin: var(--space-1) 0 var(--space-2) var(--space-4);
+    padding-left: var(--space-3);
+    border-left: 2px solid var(--accent);
+  }
+
+  .group.is-open .subtabs {
+    display: grid;
+  }
+
+  .subtab {
+    padding-block: var(--space-2);
+  }
+
+  .subtab .tab-name {
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
   .panel {
     display: grid;
     gap: var(--space-4);
@@ -175,6 +296,13 @@ const month = (ym: string): string => {
 
   .panel[hidden] {
     display: none;
+  }
+
+  .client-of {
+    color: var(--accent-text);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   h3 {
@@ -224,15 +352,6 @@ const month = (ym: string): string => {
   @media (max-width: 860px) {
     .xp {
       grid-template-columns: 1fr;
-    }
-
-    .tabs {
-      display: flex;
-      overflow-x: auto;
-    }
-
-    .tab {
-      flex: 0 0 auto;
     }
 
     .panel {

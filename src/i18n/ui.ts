@@ -28,6 +28,7 @@ export const ui = {
     "hero.next": "Next",
     "hero.viewProject": "View project",
     "footer.built": "Built with Astro",
+    "xp.client": "Client project · via",
     "footer.source": "Source on GitHub",
   },
   es: {
@@ -48,6 +49,7 @@ export const ui = {
     "hero.next": "Siguiente",
     "hero.viewProject": "Ver proyecto",
     "footer.built": "Hecho con Astro",
+    "xp.client": "Proyecto para cliente · vía",
     "footer.source": "Código en GitHub",
   },
 } as const satisfies Record<Lang, Record<string, string>>;
