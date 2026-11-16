@@ -1,0 +1,201 @@
+---
+import { Image } from "astro:assets";
+import portrait from "../../assets/gerwin-portrait.png";
+import CvButton from "../ui/CvButton.astro";
+import Icon from "../ui/Icon.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import { contact, profile, sections } from "../../data/content";
+import { tx, useTranslations, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const [emailUser, emailDomain] = profile.email.split("@");
+const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "");
+---
+
+<section class="section alt" aria-labelledby="contact">
+  <div class="container">
+    <SectionHeading
+      id="contact"
+      eyebrow={tx(sections.contact.eyebrow, lang)}
+      title={tx(sections.contact.title, lang)}
+    />
+
+    <div class="grid">
+      <div class="text reveal">
+        <p class="lead">{tx(contact.lead, lang)}</p>
+        <div class="actions">
+          <a
+            class="button-primary"
+            href="#contact"
+            data-email-user={emailUser}
+            data-email-domain={emailDomain}
+          >
+            <Icon name="mail" size={18} />
+            {t("cta.email")}
+          </a>
+          <CvButton lang={lang} />
+        </div>
+      </div>
+
+      <article class="profile-card reveal">
+        <div class="banner" aria-hidden="true"></div>
+        <Image
+          class="avatar"
+          src={portrait}
+          alt=""
+          width={96}
+          height={96}
+          densities={[1, 2]}
+          loading="lazy"
+        />
+        <h3>{profile.name}</h3>
+        <p class="role">{tx(profile.role, lang)}</p>
+        <ul class="rows" role="list">
+          <li>
+            <Icon name="mail" size={18} />
+            <a href="#contact" data-email-user={emailUser} data-email-domain={emailDomain}>
+              <span data-email-text>
+                {emailUser}
+                <span aria-hidden="true">@</span>
+                {emailDomain}
+              </span>
+            </a>
+          </li>
+          <li>
+            <Icon name="linkedin" size={18} />
+            <a href={profile.linkedin} target="_blank" rel="noopener">
+              {handle(profile.linkedin)}
+            </a>
+          </li>
+          <li>
+            <Icon name="github" size={18} />
+            <a href={profile.github} target="_blank" rel="noopener">
+              {handle(profile.github)}
+            </a>
+          </li>
+          <li>
+            <Icon name="map-pin" size={18} />
+            <span>{profile.location}</span>
+          </li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    max-width: 960px;
+    margin-inline: auto;
+  }
+
+  .text {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .lead {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .button-primary {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-6);
+    border-radius: var(--radius-pill);
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .profile-card {
+    overflow: hidden;
+    padding-bottom: var(--space-6);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .banner {
+    height: 84px;
+    border-bottom: 3px solid var(--orange-500);
+    background: linear-gradient(160deg, var(--panel-from), var(--panel-to));
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+    margin: -48px auto var(--space-3);
+    border: 4px solid var(--surface);
+    border-radius: 50%;
+    background: var(--panel-to);
+    object-fit: cover;
+    object-position: 50% 8%;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: 800;
+  }
+
+  .role {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .rows {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-6) var(--space-6) 0;
+    padding: var(--space-6) 0 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+    text-align: left;
+  }
+
+  .rows li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .rows a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .rows a:hover {
+    color: var(--accent-text);
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
