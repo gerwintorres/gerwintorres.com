@@ -6,6 +6,7 @@ import TechBelt from "./hero/TechBelt.astro";
 import About from "./sections/About.astro";
 import Experience from "./sections/Experience.astro";
 import Projects from "./sections/Projects.astro";
+import Skills from "./sections/Skills.astro";
 import { hero, profile } from "../data/content";
 import { tx, type Lang } from "../i18n/ui";
 
@@ -28,5 +29,6 @@ const { lang } = Astro.props;
     <About lang={lang} />
     <Experience lang={lang} />
     <Projects lang={lang} />
+    <Skills lang={lang} />
   </main>
 </Base>
