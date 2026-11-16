@@ -1,5 +1,6 @@
 ---
 import SectionHeading from "../ui/SectionHeading.astro";
+import TechIcon from "../ui/TechIcon.astro";
 import { sections, skills } from "../../data/content";
 import { tx, type Lang } from "../../i18n/ui";
 
@@ -27,7 +28,10 @@ const { lang } = Astro.props;
           <h3>{tx(group.layer, lang)}</h3>
           <ul class="items" role="list">
             {group.items.map((item) => (
-              <li>{tx(item, lang)}</li>
+              <li>
+                <TechIcon name={typeof item === "string" ? item : item.en} size={16} />
+                {tx(item, lang)}
+              </li>
             ))}
           </ul>
         </li>
@@ -92,12 +96,25 @@ const { lang } = Astro.props;
   }
 
   .items li {
-    padding: 0.25rem 0.75rem;
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    padding: 0.3rem 0.75rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-pill);
     background: var(--surface-2);
     font-size: var(--text-sm);
     font-weight: 500;
+  }
+
+  .items :global(.tech-icon) {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: color var(--dur) var(--ease);
+  }
+
+  .items li:hover :global(.tech-icon) {
+    color: var(--brand, var(--accent));
   }
 
   .note {

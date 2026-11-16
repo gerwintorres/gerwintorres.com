@@ -1,0 +1,97 @@
+---
+// Logo for a technology: the brand mark from simple-icons when there is one, otherwise a generic icon.
+import {
+  siDocker,
+  siFastapi,
+  siGit,
+  siGithubactions,
+  siGooglecloud,
+  siGraphql,
+  siLinux,
+  siMake,
+  siMysql,
+  siOpenapiinitiative,
+  siPandas,
+  siPostgresql,
+  siPytest,
+  siPython,
+  siQuarto,
+  siSqlalchemy,
+  siStreamlit,
+  siTraefikproxy,
+  type SimpleIcon,
+} from "simple-icons";
+import Icon, { type IconName } from "./Icon.astro";
+
+interface Props {
+  name: string;
+  size?: number;
+}
+
+const brands: Record<string, SimpleIcon> = {
+  Python: siPython,
+  FastAPI: siFastapi,
+  REST: siOpenapiinitiative,
+  GraphQL: siGraphql,
+  PostgreSQL: siPostgresql,
+  MySQL: siMysql,
+  SQLAlchemy: siSqlalchemy,
+  pandas: siPandas,
+  Docker: siDocker,
+  Linux: siLinux,
+  Traefik: siTraefikproxy,
+  "GitHub Actions": siGithubactions,
+  GCP: siGooglecloud,
+  "Google Cloud": siGooglecloud,
+  pytest: siPytest,
+  Git: siGit,
+  Streamlit: siStreamlit,
+  Quarto: siQuarto,
+  Make: siMake,
+};
+
+// Concepts and products without a free logo (Microsoft marks are not in simple-icons).
+const generic: Record<string, IconName> = {
+  Webhooks: "webhook",
+  "Event-driven design": "bolt",
+  "LLM integrations": "sparkle",
+  "Message queues": "queue",
+  "Azure Service Bus": "queue",
+  "Background workers": "gear",
+  SQL: "database",
+  ETL: "pipeline",
+  "Integration tests": "check",
+  "Code review": "code",
+  "CI/CD": "loop",
+  IaC: "code",
+  Azure: "cloud",
+  "Monday.com": "board",
+};
+
+/** Brand colors too dark to read on the navy background fall back to the accent. */
+function readable(hex: string): string | undefined {
+  const [r = 0, g = 0, b = 0] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 0.25 ? `#${hex}` : undefined;
+}
+
+const { name, size = 18 } = Astro.props;
+const brand = brands[name];
+const brandColor = brand ? readable(brand.hex) : undefined;
+const fallback = generic[name];
+---
+
+{brand ? (
+  <svg
+    class="tech-icon"
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    aria-hidden="true"
+    style={brandColor ? `--brand: ${brandColor}` : undefined}
+  >
+    <path d={brand.path} fill="currentColor" />
+  </svg>
+) : (
+  fallback && <Icon name={fallback} size={size} class="tech-icon" />
+)}

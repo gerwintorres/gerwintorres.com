@@ -1,53 +1,14 @@
 ---
-import {
-  siDocker,
-  siFastapi,
-  siGit,
-  siGithubactions,
-  siGooglecloud,
-  siLinux,
-  siMysql,
-  siPandas,
-  siPostgresql,
-  siPytest,
-  siPython,
-  siSqlalchemy,
-  siStreamlit,
-  siTraefikproxy,
-  type SimpleIcon,
-} from "simple-icons";
+import TechIcon from "../ui/TechIcon.astro";
 import { hero } from "../../data/content";
-
-const logos: Record<string, SimpleIcon> = {
-  Python: siPython,
-  FastAPI: siFastapi,
-  PostgreSQL: siPostgresql,
-  MySQL: siMysql,
-  SQLAlchemy: siSqlalchemy,
-  pandas: siPandas,
-  Docker: siDocker,
-  Linux: siLinux,
-  Traefik: siTraefikproxy,
-  "GitHub Actions": siGithubactions,
-  "Google Cloud": siGooglecloud,
-  pytest: siPytest,
-  Git: siGit,
-  Streamlit: siStreamlit,
-};
-
-const items = hero.belt.map((name) => ({ name, icon: logos[name] }));
 ---
 
 <div class="belt" aria-label="Tech stack">
   {[false, true].map((copy) => (
     <ul class="belt-list" role="list" aria-hidden={copy ? "true" : undefined}>
-      {items.map(({ name, icon }) => (
-        <li class="belt-item" style={icon ? `--brand: #${icon.hex}` : undefined}>
-          {icon && (
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-              <path d={icon.path} fill="currentColor" />
-            </svg>
-          )}
+      {hero.belt.map((name) => (
+        <li class="belt-item">
+          <TechIcon name={name} size={22} />
           <span>{name}</span>
         </li>
       ))}
@@ -93,8 +54,8 @@ const items = hero.belt.map((name) => ({ name, icon: logos[name] }));
     color: var(--text);
   }
 
-  .belt-item:hover svg {
-    color: var(--brand, currentColor);
+  .belt-item:hover :global(.tech-icon) {
+    color: var(--brand, var(--accent));
   }
 
   @keyframes slide {
