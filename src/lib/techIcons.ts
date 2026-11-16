@@ -8,7 +8,9 @@ import {
   siGoogleappsscript,
   siGooglesheets,
   siGooglecloud,
+  siGooglecloudstorage,
   siGraphql,
+  siLeaflet,
   siLinux,
   siMake,
   siMysql,
@@ -19,6 +21,7 @@ import {
   siPytest,
   siPython,
   siQt,
+  siRailway,
   siQuarto,
   siSqlalchemy,
   siStreamlit,
@@ -67,6 +70,9 @@ export const brands: Record<string, BrandIcon> = {
   "Google Sheets": siGooglesheets,
   "Apps Script": siGoogleappsscript,
   GitHub: siGithub,
+  Railway: siRailway,
+  Leaflet: siLeaflet,
+  "Cloud Storage": siGooglecloudstorage,
 };
 
 // Concepts and products without a free logo.
