@@ -8,6 +8,7 @@ import type { Lang, Localized } from "../i18n/ui";
 export interface LinkItem {
   label: Localized;
   href: string;
+  icon?: "github" | "external";
 }
 
 /** Work done for a client while employed at a company (e.g. projects delivered through oiDATA). */
@@ -656,7 +657,13 @@ export const projects: Project[] = [
       "Docker",
       "Cloud Run",
     ],
-    links: [{ label: "GitHub", href: "https://github.com/gerwintorres/reorder" }],
+    links: [
+      {
+        label: { en: "View repo", es: "Ver repo" },
+        href: "https://github.com/gerwintorres/reorder",
+        icon: "github",
+      },
+    ],
   },
   {
     slug: "pereira-public-policy-system",
@@ -671,9 +678,9 @@ export const projects: Project[] = [
           label: { en: "City Hall · Linux servers", es: "Alcaldía · servidores Linux" },
           icon: "Linux",
           color: "#e8b923",
-          x: 25,
+          x: 21,
           y: 7,
-          w: 72,
+          w: 59,
           h: 86,
         },
       ],
@@ -683,7 +690,7 @@ export const projects: Project[] = [
           label: { en: "19 agencies", es: "19 dependencias" },
           tech: "58 users",
           icon: "User",
-          x: 12,
+          x: 10,
           y: 30,
           step: 0,
           color: "#cbd5e1",
@@ -693,26 +700,36 @@ export const projects: Project[] = [
           label: { en: "Capture app", es: "Registro" },
           tech: "Streamlit",
           icon: "Streamlit",
-          x: 38,
+          x: 31,
           y: 30,
           step: 1,
         },
-        { id: "mysql", label: "MySQL", tech: "8.0", icon: "MySQL", x: 61, y: 30, step: 2 },
+        { id: "mysql", label: "MySQL", tech: "8.0", icon: "MySQL", x: 50, y: 30, step: 2 },
         {
           id: "dashboard",
           label: { en: "Dashboard", es: "Tablero" },
           tech: "Plotly",
           icon: "Streamlit",
-          x: 84,
+          x: 69,
           y: 30,
           step: 3,
+        },
+        {
+          id: "citizens",
+          label: { en: "Citizens", es: "Ciudadanía" },
+          tech: "public · HTTPS",
+          icon: "User",
+          x: 90,
+          y: 30,
+          step: 4,
+          color: "#4ade80",
         },
         {
           id: "reports",
           label: { en: "Reports", es: "Informes" },
           tech: "Quarto",
           icon: "Quarto",
-          x: 84,
+          x: 69,
           y: 72,
           step: 4,
         },
@@ -721,7 +738,7 @@ export const projects: Project[] = [
           label: "main",
           tech: "GitHub",
           icon: "GitHub",
-          x: 12,
+          x: 10,
           y: 72,
           step: 5,
           color: "#e2e8f0",
@@ -731,16 +748,17 @@ export const projects: Project[] = [
           label: "Build",
           tech: "cron · registry",
           icon: "Docker",
-          x: 38,
+          x: 31,
           y: 72,
           step: 6,
         },
-        { id: "traefik", label: "HTTPS", tech: "Traefik", icon: "Traefik", x: 61, y: 72, step: 7 },
+        { id: "traefik", label: "HTTPS", tech: "Traefik", icon: "Traefik", x: 50, y: 72, step: 7 },
       ],
       edges: [
         { from: "agencies", to: "capture", step: 1 },
         { from: "capture", to: "mysql", step: 2 },
         { from: "mysql", to: "dashboard", step: 3 },
+        { from: "dashboard", to: "citizens", step: 4 },
         { from: "dashboard", to: "reports", step: 4 },
         { from: "github", to: "build", step: 6 },
         { from: "build", to: "traefik", step: 7 },
@@ -772,7 +790,7 @@ export const projects: Project[] = [
     stack: ["Python", "MySQL", "Streamlit", "pandas", "Docker", "Traefik", "Linux"],
     links: [
       {
-        label: { en: "Public dashboard", es: "Tablero público" },
+        label: { en: "View dashboard", es: "Ver tablero" },
         href: "https://pppp2025.pereira.gov.co/",
       },
     ],
