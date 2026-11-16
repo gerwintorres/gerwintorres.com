@@ -1,6 +1,6 @@
 /*
  * Design tokens. Components use the semantic tokens (--bg, --text, --accent…);
- * the raw palette below them only changes here.
+ * the raw palette only changes here. The site has a single dark theme.
  */
 :root {
   /* Palette: Navy Mirage with the orange of the LinkedIn banner */
@@ -55,26 +55,7 @@
   --dur-fast: 150ms;
   --dur: 250ms;
 
-  /* Light theme */
-  color-scheme: light;
-  --bg: var(--sand-50);
-  --surface: #ffffff;
-  --surface-2: var(--sand-100);
-  --line: var(--sand-200);
-  --text: var(--navy-800);
-  --text-muted: var(--slate-600);
-  --accent: var(--orange-500); /* large text, icons and details only */
-  --accent-text: var(--orange-600); /* small orange text on light backgrounds */
-  --on-accent: var(--navy-800);
-  --panel-from: var(--navy-800);
-  --panel-to: var(--steel-500);
-  --on-panel: var(--sand-50);
-  --on-panel-muted: var(--slate-300);
-  --shadow: 0 1px 2px rgb(20 30 48 / 0.06), 0 10px 30px rgb(20 30 48 / 0.08);
-  --focus: var(--orange-500);
-}
-
-:root[data-theme="dark"] {
+  /* Theme: a single dark theme built on Navy Mirage */
   color-scheme: dark;
   --bg: var(--navy-900);
   --surface: var(--navy-800);

@@ -22,22 +22,12 @@ const t = useTranslations(lang);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#141e30" />
+    <meta name="theme-color" content="#0f1726" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <!-- Sets the theme before the first paint, so the page never flashes the wrong one. -->
+    <!-- Lets CSS know JavaScript runs, so reveal animations never hide content without it. -->
     <script is:inline>
-      (() => {
-        let theme = null;
-        try {
-          theme = localStorage.getItem("theme");
-        } catch {}
-        if (theme !== "light" && theme !== "dark") {
-          theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        }
-        document.documentElement.dataset.theme = theme;
-        document.documentElement.classList.add("js");
-      })();
+      document.documentElement.classList.add("js");
     </script>
   </head>
   <body>
