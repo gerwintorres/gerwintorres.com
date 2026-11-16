@@ -85,7 +85,9 @@ export const profile = {
   name: "Gerwin Lambraño Torres",
   firstName: "Gerwin",
   lastName: "Lambraño Torres",
-  initials: "GLT",
+  // The name he goes by day to day; the full name stays as the main heading.
+  shortName: "Gerwin Torres",
+  initials: "GT",
   role: { en: "Python Backend Engineer", es: "Desarrollador Backend Python" },
   location: "Pereira, Colombia",
   email: "ger.lamto@gmail.com",
