@@ -123,11 +123,12 @@ export const hero = {
     href: "#projects",
   },
   stat: {
+    prefix: "+",
     value: 1.1,
     suffix: "M",
     label: {
-      en: "citizen services tracked in 2025 by a system I built for Pereira City Hall",
-      es: "atenciones a la ciudadanía registradas en 2025 en un sistema que construí para la Alcaldía de Pereira",
+      en: "citizen interactions tracked in 2025 by a system I built for Pereira City Hall",
+      es: "atenciones a ciudadanos registradas en 2025 en un sistema que construí para la Alcaldía de Pereira",
     },
   },
   aboutLink: { en: "About me", es: "Sobre mí" },
@@ -359,8 +360,8 @@ export const projects: Project[] = [
     },
     highlights: [
       {
-        en: "In 2025: 58 officials from 19 agencies, 14 policies, COP 218 billion in allocated budget and 1.1 million citizen services.",
-        es: "En 2025: 58 funcionarios de 19 dependencias, 14 políticas, COP 218 mil millones de presupuesto apropiado y 1,1 millones de atenciones.",
+        en: "In 2025: 58 officials from 19 agencies, 14 policies, COP 218 billion in allocated budget and 1.1 million citizen interactions.",
+        es: "En 2025: 58 funcionarios de 19 dependencias, 14 políticas, COP 218 mil millones de presupuesto apropiado y 1,1 millones de atenciones a ciudadanos.",
       },
       {
         en: "Validation at the point of capture and an automated check that keeps the dashboard and its reports consistent across 106 scenarios.",
