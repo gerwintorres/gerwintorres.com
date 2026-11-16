@@ -1,0 +1,257 @@
+---
+import CvButton from "./ui/CvButton.astro";
+import Icon from "./ui/Icon.astro";
+import LangSwitch from "./LangSwitch.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { pathInLang, useTranslations, type Lang, type UIKey } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const home = pathInLang("/", lang);
+const sections: { id: string; key: UIKey }[] = [
+  { id: "about", key: "nav.about" },
+  { id: "experience", key: "nav.experience" },
+  { id: "projects", key: "nav.projects" },
+  { id: "skills", key: "nav.skills" },
+  { id: "education", key: "nav.education" },
+  { id: "contact", key: "nav.contact" },
+];
+---
+
+<header class="site-header">
+  <div class="bar container">
+    <a class="brand" href={home} aria-label="Gerwin Lambraño Torres">
+      <span class="monogram" aria-hidden="true">
+        G<span>L</span>
+      </span>
+      <span class="brand-name">Gerwin Lambraño</span>
+    </a>
+
+    <nav class="nav" id="site-nav" aria-label={t("nav.menu")}>
+      <ul role="list">
+        {sections.map(({ id, key }) => (
+          <li>
+            <a href={`${home}#${id}`} data-section={id}>
+              {t(key)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="controls">
+      <LangSwitch lang={lang} />
+      <ThemeToggle lang={lang} />
+      <CvButton lang={lang} variant="solid" />
+      <button class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false">
+        <span class="visually-hidden">{t("nav.menu")}</span>
+        <Icon name="menu" class="icon-open" />
+        <Icon name="close" class="icon-close" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".site-header");
+  const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+
+  function setMenu(open: boolean): void {
+    header?.classList.toggle("is-open", open);
+    toggle?.setAttribute("aria-expanded", String(open));
+  }
+
+  toggle?.addEventListener("click", () => setMenu(!header?.classList.contains("is-open")));
+  document.querySelectorAll(".nav a").forEach((link) => {
+    link.addEventListener("click", () => setMenu(false));
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenu(false);
+  });
+
+  // Underline the link of the section in view.
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>(".nav a[data-section]")].map((a) => [
+      a.dataset.section,
+      a,
+    ]),
+  );
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        links.forEach((a) => a.removeAttribute("aria-current"));
+        links.get(entry.target.id)?.setAttribute("aria-current", "true");
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" },
+  );
+  links.forEach((_, id) => {
+    const section = id ? document.getElementById(id) : null;
+    if (section) observer.observe(section);
+  });
+
+  window.addEventListener(
+    "scroll",
+    () => header?.classList.toggle("is-scrolled", window.scrollY > 8),
+    { passive: true },
+  );
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur) var(--ease);
+  }
+
+  .site-header.is-scrolled {
+    border-bottom-color: var(--line);
+  }
+
+  .bar {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    justify-content: space-between;
+    min-height: 68px;
+  }
+
+  .brand {
+    display: inline-flex;
+    gap: var(--space-3);
+    align-items: center;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .monogram {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--navy-800);
+    color: var(--sand-50);
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  .monogram span {
+    color: var(--orange-400);
+  }
+
+  .nav ul {
+    display: flex;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav a {
+    position: relative;
+    padding-block: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  .nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .nav a:hover,
+  .nav a[aria-current] {
+    color: var(--text);
+  }
+
+  .nav a:hover::after,
+  .nav a[aria-current]::after {
+    transform: scaleX(1);
+  }
+
+  .controls {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+  }
+
+  .menu-toggle {
+    display: none;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .menu-toggle :global(.icon-close),
+  .is-open .menu-toggle :global(.icon-open) {
+    display: none;
+  }
+
+  .is-open .menu-toggle :global(.icon-close) {
+    display: block;
+  }
+
+  @media (max-width: 960px) {
+    .brand-name {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: grid;
+    }
+
+    .nav {
+      position: absolute;
+      inset: 100% 0 auto;
+      display: none;
+      padding: var(--space-4) var(--gutter) var(--space-6);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
+    }
+
+    .is-open .nav {
+      display: block;
+    }
+
+    .nav ul {
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .nav a {
+      display: block;
+      padding-block: var(--space-3);
+      font-size: var(--text-base);
+    }
+
+    .nav a::after {
+      display: none;
+    }
+  }
+</style>
