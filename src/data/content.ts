@@ -62,6 +62,8 @@ export interface EducationItem {
   title: Localized;
   place: Localized;
   period: Localized;
+  /** Public link to verify it, when there is one. */
+  href?: string;
 }
 
 export const sections = {
@@ -629,6 +631,7 @@ export const education: EducationItem[] = [
     title: "Tools of the Trade: Linux and SQL",
     place: "Google",
     period: { en: "Nov 2025", es: "nov. 2025" },
+    href: "https://www.coursera.org/account/accomplishments/verify/1OFGURRZHTKE",
   },
   {
     kind: "talk",
