@@ -75,6 +75,14 @@ const neutral = "#a7b3c4";
   </figure>
 </div>
 
+<script>
+  // Plays each diagram's highlight only while it is on screen.
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => entry.target.classList.toggle("is-playing", entry.isIntersecting));
+  });
+  document.querySelectorAll(".arch").forEach((diagram) => observer.observe(diagram));
+</script>
+
 <style>
   .arch-scroll {
     overflow-x: auto;
@@ -133,14 +141,13 @@ const neutral = "#a7b3c4";
     stroke-width: 1.5;
     stroke-dasharray: 4 4;
     vector-effect: non-scaling-stroke;
-    animation: dash 1.2s linear infinite;
   }
 
+  /* The highlight only runs while the diagram is on screen, and jumps between steps
+     (step-end) so the browser repaints a few times per cycle instead of every frame. */
   .edge.in-path {
-    animation:
-      dash 1.2s linear infinite,
-      edge-light calc((var(--steps) + 1) * var(--beat)) linear infinite;
-    animation-delay: 0s, calc(var(--step) * var(--beat));
+    animation: edge-light calc((var(--steps) + 1) * var(--beat)) step-end infinite paused;
+    animation-delay: calc(var(--step) * var(--beat));
   }
 
   .node {
@@ -160,8 +167,13 @@ const neutral = "#a7b3c4";
   }
 
   .node.in-path {
-    animation: node-light calc((var(--steps) + 1) * var(--beat)) linear infinite;
+    animation: node-light calc((var(--steps) + 1) * var(--beat)) step-end infinite paused;
     animation-delay: calc(var(--step) * var(--beat));
+  }
+
+  .arch.is-playing .node.in-path,
+  .arch.is-playing .edge.in-path {
+    animation-play-state: running;
   }
 
   .node :global(.tech-icon) {
@@ -182,12 +194,6 @@ const neutral = "#a7b3c4";
   .tech {
     color: color-mix(in srgb, var(--node) 45%, var(--on-panel-muted));
     font-size: 0.8em;
-  }
-
-  @keyframes dash {
-    to {
-      stroke-dashoffset: -8;
-    }
   }
 
   @keyframes node-light {
@@ -219,7 +225,6 @@ const neutral = "#a7b3c4";
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .edge,
     .edge.in-path,
     .node.in-path {
       animation: none;
