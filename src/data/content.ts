@@ -10,7 +10,23 @@ export interface LinkItem {
   href: string;
 }
 
+/** Work done for a client while employed at a company (e.g. projects delivered through oiDATA). */
+export interface ClientWork {
+  id: string;
+  tab: Localized;
+  name: Localized;
+  role?: Localized;
+  type?: Localized;
+  location?: Localized;
+  start: string;
+  end: string | null;
+  summary: Localized;
+  highlights: Localized[];
+  stack: string[];
+}
+
 export interface Experience {
+  id: string;
   company: string;
   role: Localized;
   type: Localized;
@@ -20,6 +36,7 @@ export interface Experience {
   summary: Localized;
   highlights: Localized[];
   stack: string[];
+  clients?: ClientWork[];
 }
 
 export interface Project {
@@ -176,6 +193,7 @@ export const about = {
 
 export const experience: Experience[] = [
   {
+    id: "oidata",
     company: "oiDATA",
     role: { en: "Software Engineer", es: "Ingeniero de Software" },
     type: { en: "Full-time · Hybrid", es: "Tiempo completo · Híbrido" },
@@ -188,16 +206,12 @@ export const experience: Experience[] = [
     },
     highlights: [
       {
-        en: "Designed and built the nationwide WhatsApp channel of Colombia's National Planning Department (DNP), connected to its AI assistant. First version in production one week after kickoff.",
-        es: "Diseñé y construí el canal nacional de WhatsApp del Departamento Nacional de Planeación (DNP), conectado a su asistente de IA. Primera versión en producción una semana después de arrancar.",
+        en: "Delivered projects from the first meeting to production for Colombia's National Planning Department, Pereira City Hall and an insurance and tax agency in the United States.",
+        es: "Entregué proyectos desde la primera reunión hasta producción para el Departamento Nacional de Planeación, la Alcaldía de Pereira y una agencia de seguros e impuestos en Estados Unidos.",
       },
       {
-        en: "Led the public policy tracking system of Pereira City Hall: 58 officials from 19 agencies report on 14 policies, with a public statistics dashboard.",
-        es: "Lideré el sistema de seguimiento de políticas públicas de la Alcaldía de Pereira: 58 funcionarios de 19 dependencias reportan 14 políticas, con un tablero estadístico público.",
-      },
-      {
-        en: "Migrated that system from Google Cloud to the city's on-premise Linux servers, with Docker, Traefik, HTTPS and continuous deployment.",
-        es: "Migré ese sistema de Google Cloud a los servidores Linux de la Alcaldía, con Docker, Traefik, HTTPS y despliegue continuo.",
+        en: "Support and continuous improvement for the systems I deliver.",
+        es: "Soporte y mejora continua de los sistemas que entrego.",
       },
       {
         en: "Co-built an ETL pipeline that cut each purchase order of a spare-parts importer from about 28 hours of spreadsheet work to about 5.",
@@ -217,42 +231,114 @@ export const experience: Experience[] = [
       "GCP",
       "CI/CD",
     ],
-  },
-  {
-    company: "The Nest Agency LLC",
-    role: {
-      en: "Technology Solutions Development & Integration Engineer",
-      es: "Ingeniero de Desarrollo e Integración de Soluciones Tecnológicas",
-    },
-    type: { en: "Contract · Remote", es: "Contrato · Remoto" },
-    location: { en: "Connecticut, United States", es: "Connecticut, Estados Unidos" },
-    start: "2025-06",
-    end: "2026-11",
-    summary: {
-      en: "Process automation, data and IT for an insurance and tax agency in the United States.",
-      es: "Automatización de procesos, datos y TI para una agencia de seguros e impuestos en Estados Unidos.",
-    },
-    highlights: [
+    clients: [
       {
-        en: "Consolidated about 1,400 client records scattered across several platforms into a single list of 1,200 contacts, kept in sync automatically.",
-        es: "Consolidé unos 1.400 registros de clientes dispersos en varias plataformas en una lista única de 1.200 contactos, sincronizada automáticamente.",
+        id: "dnp",
+        tab: "DNP",
+        name: {
+          en: "National Planning Department (DNP)",
+          es: "Departamento Nacional de Planeación (DNP)",
+        },
+        start: "2026-10",
+        end: "2026-11",
+        summary: {
+          en: "A nationwide WhatsApp channel that will let anyone in Colombia consult the National Development Plan 2026–2030 through the DNP's AI assistant.",
+          es: "Un canal nacional de WhatsApp con el que cualquier persona en Colombia podrá consultar el Plan Nacional de Desarrollo 2026-2030 con el asistente de IA del DNP.",
+        },
+        highlights: [
+          {
+            en: "Designed and built the service; the first version was in production one week after kickoff.",
+            es: "Diseñé y construí el servicio; la primera versión salió a producción una semana después de arrancar.",
+          },
+          {
+            en: "Signed webhooks, a message queue with one session per citizen, background workers, retries and rate limiting. Phone numbers are never stored.",
+            es: "Webhooks firmados, cola de mensajes con una sesión por ciudadano, procesos en segundo plano, reintentos y límite de envío. Nunca se guardan números de teléfono.",
+          },
+          {
+            en: "Infrastructure as code on Azure, secrets in Key Vault, alerts and 90 unit and integration tests in CI.",
+            es: "Infraestructura como código en Azure, secretos en Key Vault, alertas y 90 pruebas unitarias y de integración en CI.",
+          },
+        ],
+        stack: ["Event-driven", "REST APIs", "WhatsApp Cloud API", "Azure", "IaC", "CI/CD"],
       },
       {
-        en: "Automated the sales pipeline on Monday.com with Make and Python, with alerts and tasks triggered by each stage change.",
-        es: "Automaticé el embudo de ventas en Monday.com con Make y Python, con alertas y tareas que se disparan en cada cambio de etapa.",
+        id: "pereira-city-hall",
+        tab: { en: "Pereira City Hall", es: "Alcaldía de Pereira" },
+        name: {
+          en: "Pereira City Hall · Secretaría de Planeación",
+          es: "Alcaldía de Pereira · Secretaría de Planeación",
+        },
+        start: "2025-04",
+        end: "2026-11",
+        summary: {
+          en: "A public policy tracking system: a data-capture app and a public statistics dashboard that replaced an Excel process.",
+          es: "Un sistema de seguimiento de políticas públicas: un aplicativo de registro y un tablero estadístico público que reemplazaron un proceso en Excel.",
+        },
+        highlights: [
+          {
+            en: "Led the capture app and the latest version of the dashboard: 58 officials from 19 agencies report on 14 public policies.",
+            es: "Lideré el aplicativo de registro y la última versión del tablero: 58 funcionarios de 19 dependencias reportan 14 políticas públicas.",
+          },
+          {
+            en: "Validation at the point of capture and an automated check that keeps the dashboard and its reports consistent across 106 scenarios.",
+            es: "Validación desde el registro y una verificación automática que mantiene tablero e informes consistentes en 106 escenarios.",
+          },
+          {
+            en: "Migrated the system from Google Cloud to the city's on-premise Linux servers with Docker, Traefik, HTTPS and continuous deployment.",
+            es: "Migré el sistema de Google Cloud a los servidores Linux de la Alcaldía con Docker, Traefik, HTTPS y despliegue continuo.",
+          },
+        ],
+        stack: ["Python", "MySQL", "Streamlit", "pandas", "Docker", "Traefik", "Linux"],
       },
       {
-        en: "Set up OpenAI models in Make to classify incoming email, and configured Monday's AI sales agent with the agency's knowledge base.",
-        es: "Configuré modelos de OpenAI en Make para clasificar el correo entrante, y el agente de ventas con IA de Monday con la base de conocimiento de la agencia.",
-      },
-      {
-        en: "Led an internal Streamlit platform integrated with the Monday.com GraphQL API and QuickBooks Online, and migrated the company email from GoDaddy to Microsoft 365.",
-        es: "Lideré una plataforma interna en Streamlit integrada con la API GraphQL de Monday.com y QuickBooks Online, y migré el correo de la empresa de GoDaddy a Microsoft 365.",
+        id: "nest",
+        tab: "The Nest Agency",
+        name: "The Nest Agency LLC",
+        role: {
+          en: "Technology Solutions Development & Integration Engineer",
+          es: "Ingeniero de Desarrollo e Integración de Soluciones Tecnológicas",
+        },
+        type: { en: "Contract · Remote", es: "Contrato · Remoto" },
+        location: { en: "Connecticut, United States", es: "Connecticut, Estados Unidos" },
+        start: "2025-06",
+        end: "2026-11",
+        summary: {
+          en: "Process automation, data and IT for an insurance and tax agency in the United States.",
+          es: "Automatización de procesos, datos y TI para una agencia de seguros e impuestos en Estados Unidos.",
+        },
+        highlights: [
+          {
+            en: "Consolidated about 1,400 client records scattered across several platforms into a single list of 1,200 contacts, kept in sync automatically.",
+            es: "Consolidé unos 1.400 registros de clientes dispersos en varias plataformas en una lista única de 1.200 contactos, sincronizada automáticamente.",
+          },
+          {
+            en: "Automated the sales pipeline on Monday.com with Make and Python, with alerts and tasks triggered by each stage change.",
+            es: "Automaticé el embudo de ventas en Monday.com con Make y Python, con alertas y tareas que se disparan en cada cambio de etapa.",
+          },
+          {
+            en: "Set up OpenAI models in Make to classify incoming email, and configured Monday's AI sales agent with the agency's knowledge base.",
+            es: "Configuré modelos de OpenAI en Make para clasificar el correo entrante, y el agente de ventas con IA de Monday con la base de conocimiento de la agencia.",
+          },
+          {
+            en: "Led an internal Streamlit platform integrated with the Monday.com GraphQL API and QuickBooks Online, and migrated the company email from GoDaddy to Microsoft 365.",
+            es: "Lideré una plataforma interna en Streamlit integrada con la API GraphQL de Monday.com y QuickBooks Online, y migré el correo de la empresa de GoDaddy a Microsoft 365.",
+          },
+        ],
+        stack: [
+          "Python",
+          "GraphQL",
+          "REST APIs",
+          "Make",
+          "OpenAI",
+          "Streamlit",
+          "pandas",
+          "Docker",
+        ],
       },
     ],
-    stack: ["Python", "GraphQL", "REST APIs", "Make", "OpenAI", "Streamlit", "pandas", "Docker"],
   },
   {
+    id: "delphi",
     company: "Delphi Analytics",
     role: { en: "Junior Backend Developer", es: "Desarrollador Backend Junior" },
     type: { en: "Full-time · On-site", es: "Tiempo completo · Presencial" },
@@ -280,6 +366,7 @@ export const experience: Experience[] = [
     stack: ["Python", "FastAPI", "PySide", "QML", "Whisper", "Git"],
   },
   {
+    id: "utp",
     company: "Universidad Tecnológica de Pereira",
     role: { en: "Python Instructor", es: "Docente de Python" },
     type: { en: "Contract · On-site", es: "Contrato · Presencial" },
