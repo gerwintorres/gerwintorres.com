@@ -1,0 +1,242 @@
+---
+import Chips from "../ui/Chips.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import { experience, sections } from "../../data/content";
+import { tx, useTranslations, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = (ym: string): string => ym.split("-")[0] ?? ym;
+const month = (ym: string): string => {
+  const [y, m] = ym.split("-").map(Number);
+  return new Intl.DateTimeFormat(lang, { month: "short", year: "numeric" }).format(
+    new Date(y ?? 2000, (m ?? 1) - 1),
+  );
+};
+---
+
+<section class="section alt" aria-labelledby="experience">
+  <div class="container">
+    <SectionHeading
+      id="experience"
+      eyebrow={tx(sections.experience.eyebrow, lang)}
+      title={tx(sections.experience.title, lang)}
+    />
+
+    <div class="xp reveal">
+      <div class="tabs" role="tablist" aria-label={tx(sections.experience.eyebrow, lang)}>
+        {experience.map((item, i) => (
+          <button
+            class="tab"
+            type="button"
+            role="tab"
+            id={`xp-tab-${i}`}
+            aria-controls={`xp-panel-${i}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            <span class="tab-name">{item.company}</span>
+            <span class="tab-years mono">
+              {year(item.start)} – {item.end ? year(item.end) : t("date.present")}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {experience.map((item, i) => (
+        <article
+          class="panel"
+          role="tabpanel"
+          id={`xp-panel-${i}`}
+          aria-labelledby={`xp-tab-${i}`}
+          hidden={i !== 0}
+        >
+          <h3>
+            {tx(item.role, lang)} <span class="at">@ {item.company}</span>
+          </h3>
+          <p class="meta">
+            <span class="mono">
+              {month(item.start)} – {item.end ? month(item.end) : t("date.present")}
+            </span>
+            <span>{tx(item.type, lang)}</span>
+            <span>{tx(item.location, lang)}</span>
+          </p>
+          <p class="summary">{tx(item.summary, lang)}</p>
+          <ul class="highlights" role="list">
+            {item.highlights.map((highlight) => (
+              <li>{tx(highlight, lang)}</li>
+            ))}
+          </ul>
+          <Chips items={item.stack} />
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Accessible tabs: click or arrow keys move between companies.
+  document.querySelectorAll<HTMLElement>(".xp").forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>("[role=tab]")];
+
+    function select(index: number, focus = false): void {
+      tabs.forEach((tab, i) => {
+        const selected = i === index;
+        tab.setAttribute("aria-selected", String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        const panel = document.getElementById(tab.getAttribute("aria-controls") ?? "");
+        if (panel) panel.hidden = !selected;
+      });
+      if (focus) tabs[index]?.focus();
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => select(i));
+      tab.addEventListener("keydown", (event) => {
+        const keys: Record<string, number> = {
+          ArrowDown: i + 1,
+          ArrowRight: i + 1,
+          ArrowUp: i - 1,
+          ArrowLeft: i - 1,
+          Home: 0,
+          End: tabs.length - 1,
+        };
+        const next = keys[event.key];
+        if (next === undefined) return;
+        event.preventDefault();
+        select((next + tabs.length) % tabs.length, true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .xp {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  .tabs {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .tab {
+    display: grid;
+    gap: 2px;
+    padding: var(--space-3) var(--space-4);
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+
+  .tab:hover {
+    background: var(--surface-2);
+  }
+
+  .tab[aria-selected="true"] {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .tab-name {
+    font-weight: 700;
+  }
+
+  .tab-years {
+    font-size: var(--text-xs);
+    opacity: 0.75;
+  }
+
+  .panel {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  .panel[hidden] {
+    display: none;
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+    font-weight: 800;
+  }
+
+  .at {
+    color: var(--accent-text);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .summary {
+    color: var(--text-muted);
+  }
+
+  .highlights {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .highlights li {
+    position: relative;
+    padding-left: var(--space-6);
+  }
+
+  .highlights li::before {
+    content: "";
+    position: absolute;
+    top: 0.65em;
+    left: 0;
+    width: 10px;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  @media (max-width: 860px) {
+    .xp {
+      grid-template-columns: 1fr;
+    }
+
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+    }
+
+    .tab {
+      flex: 0 0 auto;
+    }
+
+    .panel {
+      padding: var(--space-6);
+    }
+  }
+</style>
