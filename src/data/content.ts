@@ -39,11 +39,54 @@ export interface Experience {
   clients?: ClientWork[];
 }
 
+/** A box in a project's architecture diagram. x and y are percentages of the diagram. */
+export interface ArchNode {
+  id: string;
+  label: Localized;
+  tech?: string;
+  /** Name looked up by TechIcon. */
+  icon?: string;
+  x: number;
+  y: number;
+  /** Position in the request path; nodes without a step stay as context. */
+  step?: number;
+  /** Tint of the box; defaults to the technology's brand color. */
+  color?: string;
+}
+
+export interface ArchEdge {
+  from: string;
+  to: string;
+  step?: number;
+}
+
+export interface ArchGroup {
+  label: Localized;
+  /** Logo shown next to the label, looked up by TechIcon. */
+  icon?: string;
+  color?: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface Architecture {
+  /** Width / height of the diagram. */
+  aspect: number;
+  /** Below this width (px) the diagram scrolls sideways instead of squeezing its boxes. */
+  minWidth?: number;
+  summary: Localized;
+  groups?: ArchGroup[];
+  nodes: ArchNode[];
+  edges: ArchEdge[];
+}
+
 export interface Project {
   slug: string;
   kind: Localized;
-  /** Steps of the data flow, drawn as a diagram instead of screenshots. */
-  flow: Localized[];
+  /** Architecture drawn instead of screenshots, since most of this work is confidential. */
+  architecture: Architecture;
   title: Localized;
   summary: Localized;
   highlights: Localized[];
@@ -396,13 +439,101 @@ export const experience: Experience[] = [
 export const projects: Project[] = [
   {
     slug: "dnp-whatsapp-channel",
-    flow: [
-      "WhatsApp",
-      { en: "Signed webhook", es: "Webhook firmado" },
-      { en: "Queue per citizen", es: "Cola por ciudadano" },
-      "Worker",
-      { en: "AI assistant", es: "Asistente de IA" },
-    ],
+    architecture: {
+      aspect: 3.6,
+      minWidth: 700,
+      summary: {
+        en: "A citizen writes on WhatsApp; a signed webhook queues the message in a per-citizen session; a worker reads the conversation history, asks the AI assistant and replies.",
+        es: "Un ciudadano escribe por WhatsApp; un webhook firmado encola el mensaje en una sesión por ciudadano; un worker lee el historial, consulta al asistente de IA y responde.",
+      },
+      groups: [{ label: "Azure", icon: "Azure", color: "#3a96dd", x: 23, y: 8, w: 54, h: 84 }],
+      nodes: [
+        {
+          id: "citizen",
+          label: { en: "Citizen", es: "Ciudadano" },
+          tech: "WhatsApp",
+          icon: "WhatsApp Cloud API",
+          x: 14,
+          y: 31,
+          step: 0,
+        },
+        {
+          id: "webhook",
+          label: "Webhook",
+          tech: "HMAC",
+          icon: "Webhooks",
+          x: 32,
+          y: 31,
+          step: 1,
+          color: "#3a96dd",
+        },
+        {
+          id: "queue",
+          label: { en: "Queue", es: "Cola" },
+          tech: "Service Bus",
+          icon: "Message queues",
+          x: 50,
+          y: 31,
+          step: 2,
+          color: "#3a96dd",
+        },
+        {
+          id: "worker",
+          label: "Worker",
+          tech: "Sessions",
+          icon: "Background workers",
+          x: 68,
+          y: 31,
+          step: 3,
+          color: "#3a96dd",
+        },
+        {
+          id: "assistant",
+          label: { en: "AI assistant", es: "Asistente IA" },
+          tech: "LLM + RAG",
+          icon: "LLM integrations",
+          x: 86,
+          y: 31,
+          step: 4,
+          color: "#a78bfa",
+        },
+        {
+          id: "history",
+          label: { en: "History 48 h", es: "Historial 48 h" },
+          tech: "Table Storage",
+          icon: "SQL",
+          x: 68,
+          y: 71,
+          step: 5,
+          color: "#2dd4bf",
+        },
+        {
+          id: "secrets",
+          label: { en: "Secrets", es: "Secretos" },
+          tech: "Key Vault",
+          icon: "Secrets",
+          x: 32,
+          y: 71,
+          color: "#f5b83d",
+        },
+        {
+          id: "monitoring",
+          label: { en: "Monitoring", es: "Monitoreo" },
+          tech: "App Insights",
+          icon: "Monitoring",
+          x: 50,
+          y: 71,
+          color: "#3a96dd",
+        },
+      ],
+      edges: [
+        { from: "citizen", to: "webhook", step: 1 },
+        { from: "webhook", to: "queue", step: 2 },
+        { from: "queue", to: "worker", step: 3 },
+        { from: "worker", to: "assistant", step: 4 },
+        { from: "worker", to: "history", step: 5 },
+      ],
+    },
     kind: { en: "Professional case", es: "Caso profesional" },
     title: {
       en: "Nationwide WhatsApp channel for the National Planning Department",
@@ -431,13 +562,92 @@ export const projects: Project[] = [
   },
   {
     slug: "pereira-public-policy-system",
-    flow: [
-      { en: "19 agencies", es: "19 dependencias" },
-      { en: "Capture app", es: "Aplicativo de registro" },
-      "MySQL",
-      { en: "Public dashboard", es: "Tablero público" },
-      { en: "Reports", es: "Informes" },
-    ],
+    architecture: {
+      aspect: 1.75,
+      summary: {
+        en: "Officials from 19 agencies report through a capture app into MySQL; a public dashboard and automated reports read from it. Every change on main is built and deployed to the city's Linux servers behind Traefik.",
+        es: "Funcionarios de 19 dependencias reportan en un aplicativo que guarda en MySQL; un tablero público e informes automáticos leen de ahí. Cada cambio en main se construye y se despliega en los servidores Linux de la Alcaldía detrás de Traefik.",
+      },
+      groups: [
+        {
+          label: { en: "City Hall · Linux servers", es: "Alcaldía · servidores Linux" },
+          icon: "Linux",
+          color: "#e8b923",
+          x: 25,
+          y: 7,
+          w: 72,
+          h: 86,
+        },
+      ],
+      nodes: [
+        {
+          id: "agencies",
+          label: { en: "19 agencies", es: "19 dependencias" },
+          tech: "58 users",
+          icon: "User",
+          x: 12,
+          y: 30,
+          step: 0,
+          color: "#cbd5e1",
+        },
+        {
+          id: "capture",
+          label: { en: "Capture app", es: "Registro" },
+          tech: "Streamlit",
+          icon: "Streamlit",
+          x: 38,
+          y: 30,
+          step: 1,
+        },
+        { id: "mysql", label: "MySQL", tech: "8.0", icon: "MySQL", x: 61, y: 30, step: 2 },
+        {
+          id: "dashboard",
+          label: { en: "Dashboard", es: "Tablero" },
+          tech: "Plotly",
+          icon: "Streamlit",
+          x: 84,
+          y: 30,
+          step: 3,
+        },
+        {
+          id: "reports",
+          label: { en: "Reports", es: "Informes" },
+          tech: "Quarto",
+          icon: "Quarto",
+          x: 84,
+          y: 72,
+          step: 4,
+        },
+        {
+          id: "github",
+          label: "main",
+          tech: "GitHub",
+          icon: "GitHub",
+          x: 12,
+          y: 72,
+          step: 5,
+          color: "#e2e8f0",
+        },
+        {
+          id: "build",
+          label: "Build",
+          tech: "cron · registry",
+          icon: "Docker",
+          x: 38,
+          y: 72,
+          step: 6,
+        },
+        { id: "traefik", label: "HTTPS", tech: "Traefik", icon: "Traefik", x: 61, y: 72, step: 7 },
+      ],
+      edges: [
+        { from: "agencies", to: "capture", step: 1 },
+        { from: "capture", to: "mysql", step: 2 },
+        { from: "mysql", to: "dashboard", step: 3 },
+        { from: "dashboard", to: "reports", step: 4 },
+        { from: "github", to: "build", step: 6 },
+        { from: "build", to: "traefik", step: 7 },
+      ],
+    },
     kind: { en: "Professional case", es: "Caso profesional" },
     title: {
       en: "Public policy tracking system for Pereira City Hall",
@@ -471,13 +681,103 @@ export const projects: Project[] = [
   },
   {
     slug: "purchase-order-automation",
-    flow: [
-      { en: "ERP exports", es: "Exportaciones del ERP" },
-      { en: "Cleaning", es: "Limpieza" },
-      { en: "Demand", es: "Demanda" },
-      { en: "Best price", es: "Mejor precio" },
-      { en: "Order", es: "Pedido" },
-    ],
+    architecture: {
+      aspect: 1.75,
+      summary: {
+        en: "Three exports from an ERP with no API go through cleaning, demand estimation and best-price selection, and come out as one purchase order per supplier.",
+        es: "Tres exportaciones de un ERP sin API pasan por limpieza, estimación de demanda y selección del mejor precio, y salen como un pedido por proveedor.",
+      },
+      groups: [
+        {
+          label: { en: "Streamlit app · Docker", es: "App en Streamlit · Docker" },
+          icon: "Docker",
+          color: "#2496ed",
+          x: 28,
+          y: 7,
+          w: 48,
+          h: 86,
+        },
+      ],
+      nodes: [
+        {
+          id: "sales",
+          label: { en: "Sales", es: "Ventas" },
+          tech: "ERP export",
+          icon: "Spreadsheet",
+          x: 13,
+          y: 22,
+          step: 0,
+          color: "#94a3b8",
+        },
+        {
+          id: "stock",
+          label: { en: "Stock + transit", es: "Stock + tránsito" },
+          tech: "ERP export",
+          icon: "Spreadsheet",
+          x: 13,
+          y: 50,
+          step: 0,
+          color: "#94a3b8",
+        },
+        {
+          id: "prices",
+          label: { en: "Supplier prices", es: "Precios" },
+          tech: "ERP export",
+          icon: "Spreadsheet",
+          x: 13,
+          y: 78,
+          step: 0,
+          color: "#94a3b8",
+        },
+        {
+          id: "clean",
+          label: { en: "Cleaning", es: "Limpieza" },
+          tech: "pandas",
+          icon: "pandas",
+          x: 42,
+          y: 50,
+          step: 1,
+          color: "#e70488",
+        },
+        {
+          id: "demand",
+          label: { en: "Demand", es: "Demanda" },
+          tech: "statistics",
+          icon: "Python",
+          x: 62,
+          y: 28,
+          step: 2,
+        },
+        {
+          id: "price",
+          label: { en: "Best price", es: "Mejor precio" },
+          tech: "by supplier",
+          icon: "ETL",
+          x: 62,
+          y: 72,
+          step: 3,
+          color: "#2dd4bf",
+        },
+        {
+          id: "orders",
+          label: { en: "Orders", es: "Pedidos" },
+          tech: "Excel",
+          icon: "Spreadsheet",
+          x: 88,
+          y: 50,
+          step: 4,
+          color: "#22c55e",
+        },
+      ],
+      edges: [
+        { from: "sales", to: "clean", step: 1 },
+        { from: "stock", to: "clean", step: 1 },
+        { from: "prices", to: "clean", step: 1 },
+        { from: "clean", to: "demand", step: 2 },
+        { from: "demand", to: "price", step: 3 },
+        { from: "price", to: "orders", step: 4 },
+      ],
+    },
     kind: { en: "Professional case", es: "Caso profesional" },
     title: {
       en: "Purchase-order automation for a spare-parts importer",
@@ -502,13 +802,74 @@ export const projects: Project[] = [
   },
   {
     slug: "reorder",
-    flow: [
-      "CSV",
-      "FastAPI",
-      { en: "Domain", es: "Dominio" },
-      "PostgreSQL",
-      { en: "Estimate", es: "Estimación" },
-    ],
+    architecture: {
+      aspect: 1.75,
+      summary: {
+        en: "A client calls the FastAPI service with a JWT; the domain estimates demand with Python's statistics module and a SQLAlchemy repository stores the results in PostgreSQL. It runs on Google Cloud Run and every change goes through GitHub Actions.",
+        es: "Un cliente llama al servicio en FastAPI con un JWT; el dominio estima la demanda con el módulo statistics de Python y un repositorio con SQLAlchemy guarda los resultados en PostgreSQL. Corre en Google Cloud Run y cada cambio pasa por GitHub Actions.",
+      },
+      groups: [
+        {
+          label: "Google Cloud Run",
+          icon: "Google Cloud",
+          color: "#4285f4",
+          x: 25,
+          y: 7,
+          w: 50,
+          h: 86,
+        },
+      ],
+      nodes: [
+        {
+          id: "client",
+          label: { en: "Client", es: "Cliente" },
+          tech: "HTTP + JWT",
+          icon: "User",
+          x: 12,
+          y: 30,
+          step: 0,
+          color: "#cbd5e1",
+        },
+        { id: "api", label: "API", tech: "FastAPI", icon: "FastAPI", x: 38, y: 30, step: 1 },
+        {
+          id: "domain",
+          label: { en: "Domain", es: "Dominio" },
+          tech: "statistics",
+          icon: "Python",
+          x: 62,
+          y: 30,
+          step: 2,
+        },
+        {
+          id: "repo",
+          label: { en: "Repository", es: "Repositorio" },
+          tech: "SQLAlchemy",
+          icon: "SQLAlchemy",
+          x: 50,
+          y: 72,
+          step: 3,
+          color: "#f87171",
+        },
+        {
+          id: "db",
+          label: "PostgreSQL",
+          tech: "Alembic",
+          icon: "PostgreSQL",
+          x: 87,
+          y: 72,
+          step: 4,
+        },
+        { id: "csv", label: "CSV", tech: "pandas", icon: "pandas", x: 12, y: 72, color: "#e70488" },
+        { id: "ci", label: "CI", tech: "GitHub Actions", icon: "GitHub Actions", x: 87, y: 30 },
+      ],
+      edges: [
+        { from: "client", to: "api", step: 1 },
+        { from: "api", to: "domain", step: 2 },
+        { from: "domain", to: "repo", step: 3 },
+        { from: "repo", to: "db", step: 4 },
+        { from: "csv", to: "api" },
+      ],
+    },
     kind: { en: "Personal project", es: "Proyecto personal" },
     title: "reorder",
     summary: {
@@ -539,12 +900,89 @@ export const projects: Project[] = [
   },
   {
     slug: "earthquake-damage-reporting",
-    flow: [
-      { en: "Field report", es: "Reporte de campo" },
-      { en: "Photo + GPS", es: "Foto + GPS" },
-      { en: "Priority", es: "Prioridad" },
-      { en: "Live map", es: "Mapa en vivo" },
-    ],
+    architecture: {
+      aspect: 1.75,
+      summary: {
+        en: "Field reports with a photo and GPS location reach a Node.js server, are stored in Google Sheets, get a priority score and show up on a live map for the command posts. The public map stays off.",
+        es: "Los reportes de campo con foto y ubicación GPS llegan a un servidor en Node.js, se guardan en Google Sheets, reciben un puntaje de prioridad y aparecen en un mapa en vivo para los puestos de mando. El mapa público queda apagado.",
+      },
+      groups: [
+        {
+          label: "Google Workspace",
+          icon: "Apps Script",
+          color: "#34a853",
+          x: 50,
+          y: 7,
+          w: 26,
+          h: 86,
+        },
+      ],
+      nodes: [
+        {
+          id: "report",
+          label: { en: "Field report", es: "Reporte" },
+          tech: "photo + GPS",
+          icon: "User",
+          x: 13,
+          y: 30,
+          step: 0,
+          color: "#f59e0b",
+        },
+        {
+          id: "server",
+          label: { en: "Server", es: "Servidor" },
+          tech: "Node.js",
+          icon: "Node.js",
+          x: 35,
+          y: 30,
+          step: 1,
+        },
+        {
+          id: "sheets",
+          label: "Sheets",
+          tech: "Apps Script",
+          icon: "Google Sheets",
+          x: 63,
+          y: 30,
+          step: 2,
+        },
+        {
+          id: "priority",
+          label: { en: "Priority", es: "Prioridad" },
+          tech: "auto score",
+          icon: "Event-driven",
+          x: 63,
+          y: 72,
+          step: 3,
+          color: "#f97316",
+        },
+        {
+          id: "map",
+          label: { en: "Live map", es: "Mapa en vivo" },
+          tech: "PMU",
+          icon: "Map",
+          x: 88,
+          y: 72,
+          step: 4,
+          color: "#ef4444",
+        },
+        {
+          id: "public",
+          label: { en: "Public map", es: "Mapa público" },
+          tech: "off",
+          icon: "Locked",
+          x: 88,
+          y: 30,
+          color: "#94a3b8",
+        },
+      ],
+      edges: [
+        { from: "report", to: "server", step: 1 },
+        { from: "server", to: "sheets", step: 2 },
+        { from: "sheets", to: "priority", step: 3 },
+        { from: "priority", to: "map", step: 4 },
+      ],
+    },
     kind: { en: "Volunteer", es: "Voluntariado" },
     title: {
       en: "Damage reporting after the August 2026 earthquake",

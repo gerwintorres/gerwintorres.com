@@ -1,6 +1,6 @@
 ---
+import ArchDiagram from "../ui/ArchDiagram.astro";
 import Chips from "../ui/Chips.astro";
-import FlowDiagram from "../ui/FlowDiagram.astro";
 import Icon from "../ui/Icon.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import { projects, sections } from "../../data/content";
@@ -24,7 +24,7 @@ const { lang } = Astro.props;
     <ul class="grid" role="list">
       {projects.map((project, i) => (
         <li class:list={["card reveal", { featured: i === 0 }]}>
-          <FlowDiagram steps={project.flow} lang={lang} />
+          <ArchDiagram diagram={project.architecture} lang={lang} />
           <div class="body">
             <p class="kind mono">{tx(project.kind, lang)}</p>
             <h3>{tx(project.title, lang)}</h3>
@@ -80,9 +80,26 @@ const { lang } = Astro.props;
 
   .featured {
     grid-column: 1 / -1;
-    grid-template-columns: 1fr 1.1fr;
-    grid-template-rows: auto;
-    align-items: center;
+  }
+
+  .featured .body {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-8);
+  }
+
+  .featured .body > :global(*) {
+    grid-column: 1;
+  }
+
+  .featured .body > .highlights,
+  .featured .body > :global(.chips),
+  .featured .body > .links {
+    grid-column: 2;
+  }
+
+  .featured .highlights {
+    grid-row: 1 / span 3;
+    align-self: center;
   }
 
   .body {
