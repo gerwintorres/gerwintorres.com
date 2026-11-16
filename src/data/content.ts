@@ -649,7 +649,7 @@ export const education: EducationItem[] = [
 
 export const contact = {
   lead: {
-    en: "The quickest way to reach me is by email or LinkedIn.",
-    es: "La forma más rápida de contactarme es por correo o LinkedIn.",
+    en: "If you're building something where Python, data and solid engineering matter, I'd like to hear about it. Email or LinkedIn are the quickest ways to reach me.",
+    es: "Si estás construyendo algo donde importan Python, los datos y la buena ingeniería, me gustaría escucharte. El correo o LinkedIn son la forma más rápida de contactarme.",
   },
 } as const;
