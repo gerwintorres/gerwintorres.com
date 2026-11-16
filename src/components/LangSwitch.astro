@@ -1,0 +1,42 @@
+---
+import { pathInLang, useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const other: Lang = lang === "en" ? "es" : "en";
+---
+
+<a
+  class="lang-switch"
+  href={pathInLang(Astro.url.pathname, other)}
+  hreflang={other}
+  lang={other}
+  aria-label={t("lang.otherLabel")}
+>
+  {other.toUpperCase()}
+</a>
+
+<style>
+  .lang-switch {
+    display: inline-grid;
+    place-items: center;
+    min-width: 40px;
+    height: 40px;
+    padding-inline: var(--space-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+
+  .lang-switch:hover {
+    border-color: var(--accent);
+  }
+</style>
