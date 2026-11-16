@@ -35,6 +35,7 @@ export interface Project {
 }
 
 export interface SkillGroup {
+  code: string;
   layer: Localized;
   items: Localized[];
 }
@@ -478,8 +479,9 @@ export const projects: Project[] = [
 
 /** Ordered like the layers of a backend service, from the API down to the infrastructure. */
 export const skills: SkillGroup[] = [
-  { layer: "APIs", items: ["REST", "FastAPI", "Webhooks", "GraphQL"] },
+  { code: "API", layer: "APIs", items: ["REST", "FastAPI", "Webhooks", "GraphQL"] },
   {
+    code: "SRV",
     layer: { en: "Services", es: "Servicios" },
     items: [
       "Python",
@@ -488,6 +490,7 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
+    code: "EVT",
     layer: { en: "Messaging", es: "Mensajería" },
     items: [
       { en: "Message queues", es: "Colas de mensajes" },
@@ -495,8 +498,13 @@ export const skills: SkillGroup[] = [
       { en: "Background workers", es: "Procesos en segundo plano" },
     ],
   },
-  { layer: { en: "Data", es: "Datos" }, items: ["PostgreSQL", "MySQL", "SQL", "pandas", "ETL"] },
   {
+    code: "DB",
+    layer: { en: "Data", es: "Datos" },
+    items: ["PostgreSQL", "MySQL", "SQL", "pandas", "ETL"],
+  },
+  {
+    code: "QA",
     layer: { en: "Quality", es: "Calidad" },
     items: [
       "pytest",
@@ -505,10 +513,12 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
+    code: "OPS",
     layer: { en: "Infrastructure", es: "Infraestructura" },
     items: ["Docker", "Linux", "Traefik", "CI/CD", "GitHub Actions", "IaC", "GCP", "Azure"],
   },
   {
+    code: "+",
     layer: { en: "Other", es: "Otros" },
     items: ["Git", "Streamlit", "Quarto", "Make", "Monday.com"],
   },
