@@ -44,6 +44,40 @@ export interface EducationItem {
   period: Localized;
 }
 
+export const sections = {
+  about: {
+    eyebrow: { en: "About", es: "Sobre mí" },
+    title: {
+      en: "Backend engineer, from the data model to production",
+      es: "Ingeniero backend, del modelo de datos a producción",
+    },
+  },
+  experience: {
+    eyebrow: { en: "Experience", es: "Experiencia" },
+    title: { en: "Where I've worked", es: "Dónde he trabajado" },
+  },
+  projects: {
+    eyebrow: { en: "Projects", es: "Proyectos" },
+    title: { en: "Work I'm proud of", es: "Trabajos de los que me enorgullezco" },
+  },
+  skills: {
+    eyebrow: { en: "Skills", es: "Habilidades" },
+    title: { en: "The stack I work with", es: "El stack con el que trabajo" },
+    note: {
+      en: "Ordered like the layers of a backend service, from the API down to the infrastructure.",
+      es: "Ordenado como las capas de un servicio backend, desde la API hasta la infraestructura.",
+    },
+  },
+  education: {
+    eyebrow: { en: "Education", es: "Formación" },
+    title: { en: "Studies, certifications and talks", es: "Estudios, certificaciones y charlas" },
+  },
+  contact: {
+    eyebrow: { en: "Contact", es: "Contacto" },
+    title: { en: "Let's talk", es: "Hablemos" },
+  },
+} as const;
+
 export const profile = {
   name: "Gerwin Lambraño Torres",
   firstName: "Gerwin",

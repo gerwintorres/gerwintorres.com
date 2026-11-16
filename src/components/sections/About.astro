@@ -1,0 +1,176 @@
+---
+import SectionHeading from "../ui/SectionHeading.astro";
+import { about, education, experience, sections } from "../../data/content";
+import { tx, useTranslations, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = (ym: string): string => ym.split("-")[0] ?? ym;
+
+// Current roles first, then the rest from the most recent.
+const ordered = [...experience].sort(
+  (a, b) =>
+    Number(b.end === null) - Number(a.end === null) || (b.end ?? "").localeCompare(a.end ?? ""),
+);
+
+const timeline = [
+  ...ordered.map((item) => ({
+    period: `${year(item.start)} – ${item.end ? year(item.end) : t("date.present").toLowerCase()}`,
+    title: tx(item.role, lang),
+    place: item.company,
+    current: item.end === null,
+  })),
+  ...education
+    .filter((item) => item.kind === "degree")
+    .map((item) => ({
+      period: tx(item.period, lang),
+      title: tx(item.title, lang),
+      place: tx(item.place, lang),
+      current: false,
+    })),
+];
+---
+
+<section class="section" aria-labelledby="about">
+  <div class="container">
+    <SectionHeading
+      id="about"
+      eyebrow={tx(sections.about.eyebrow, lang)}
+      title={tx(sections.about.title, lang)}
+    />
+
+    <div class="grid">
+      <div class="text reveal">
+        <p class="lead">{tx(about.lead, lang)}</p>
+        {about.body.map((paragraph) => (
+          <p>{tx(paragraph, lang)}</p>
+        ))}
+
+        <dl class="stats">
+          {about.stats.map((stat) => (
+            <div>
+              <dt>{tx(stat.label, lang)}</dt>
+              <dd>{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <ol class="timeline reveal" role="list">
+        {timeline.map((entry) => (
+          <li class:list={{ current: entry.current }}>
+            <span class="period mono">{entry.period}</span>
+            <span class="title">{entry.title}</span>
+            <span class="place">{entry.place}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .text {
+    display: grid;
+    gap: var(--space-4);
+    color: var(--text-muted);
+  }
+
+  .lead {
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin: var(--space-6) 0 0;
+  }
+
+  .stats div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-1);
+  }
+
+  .stats dt {
+    font-size: var(--text-sm);
+  }
+
+  .stats dd {
+    margin: 0;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .timeline {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0 0 0 var(--space-6);
+    border-left: 2px solid var(--line);
+    list-style: none;
+  }
+
+  .timeline li {
+    position: relative;
+    display: grid;
+    gap: 2px;
+  }
+
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    top: 0.45em;
+    left: calc(-1 * var(--space-6) - 7px);
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--line);
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  .timeline li.current::before {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .period {
+    color: var(--accent-text);
+    font-size: var(--text-xs);
+  }
+
+  .title {
+    font-weight: 700;
+  }
+
+  .place {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
