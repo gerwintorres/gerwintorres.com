@@ -23,7 +23,8 @@ export type IconName =
   | "webhook"
   | "pipeline"
   | "loop"
-  | "board";
+  | "board"
+  | "chart";
 
 interface Props {
   name: IconName;
@@ -122,4 +123,5 @@ const { name, size = 20, class: className } = Astro.props;
       <path d="M9 4v16m6-16v16" />
     </>
   )}
+  {name === "chart" && <path d="M4 20V10m6 10V4m6 16v-7m4 7H2" />}
 </svg>
