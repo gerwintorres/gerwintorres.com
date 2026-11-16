@@ -60,21 +60,56 @@ export const profile = {
 } as const;
 
 export const hero = {
-  eyebrow: {
-    en: "Python Backend Engineer · Pereira, CO",
-    es: "Desarrollador Backend Python · Pereira, CO",
-  },
+  status: { en: "Available · Pereira, CO", es: "Disponible · Pereira, CO" },
+  // Typed one after another in the hero card.
   roles: [
-    "FastAPI & REST APIs",
-    { en: "Event-driven integrations", es: "Integraciones orientadas a eventos" },
-    { en: "Data pipelines and ETL", es: "Flujos de datos y ETL" },
-    "GCP · Azure · Linux",
+    { en: "Software Backend Engineer", es: "Ingeniero de Software Backend" },
+    "Python & FastAPI",
+    { en: "REST APIs", es: "APIs REST" },
+    { en: "Event-driven architecture", es: "Arquitectura orientada a eventos" },
+    { en: "Cloud & Data", es: "Cloud y datos" },
+    "GCP & Azure",
     { en: "AI-first development", es: "Desarrollo AI-First" },
   ] satisfies Localized[],
   tagline: {
     en: "I build Python systems that people actually use: APIs, integrations and data pipelines that run in production.",
     es: "Construyo sistemas en Python que la gente usa de verdad: APIs, integraciones y flujos de datos que corren en producción.",
   },
+  featured: {
+    label: { en: "Latest project", es: "Proyecto más reciente" },
+    title: {
+      en: "Nationwide WhatsApp channel for Colombia's National Planning Department",
+      es: "Canal nacional de WhatsApp para el Departamento Nacional de Planeación",
+    },
+    href: "#projects",
+  },
+  stat: {
+    value: 1.1,
+    suffix: "M",
+    label: {
+      en: "citizen services tracked in 2025 by a system I built for Pereira City Hall",
+      es: "atenciones a la ciudadanía registradas en 2025 en un sistema que construí para la Alcaldía de Pereira",
+    },
+  },
+  aboutLink: { en: "About me", es: "Sobre mí" },
+  // Logos come from simple-icons when there is one; the rest show their name only.
+  belt: [
+    "Python",
+    "FastAPI",
+    "PostgreSQL",
+    "MySQL",
+    "SQLAlchemy",
+    "pandas",
+    "Docker",
+    "Linux",
+    "Traefik",
+    "GitHub Actions",
+    "Google Cloud",
+    "Azure",
+    "pytest",
+    "Git",
+    "Streamlit",
+  ],
 } as const;
 
 export const about = {
