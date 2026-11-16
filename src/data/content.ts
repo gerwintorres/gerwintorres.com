@@ -719,7 +719,7 @@ export const projects: Project[] = [
           label: { en: "Citizens", es: "Ciudadanía" },
           tech: "public · HTTPS",
           icon: "User",
-          x: 90,
+          x: 88.5,
           y: 30,
           step: 4,
           color: "#4ade80",
