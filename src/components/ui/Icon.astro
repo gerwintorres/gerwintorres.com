@@ -24,7 +24,10 @@ export type IconName =
   | "pipeline"
   | "loop"
   | "board"
-  | "chart";
+  | "chart"
+  | "key"
+  | "user"
+  | "lock";
 
 interface Props {
   name: IconName;
@@ -124,4 +127,22 @@ const { name, size = 20, class: className } = Astro.props;
     </>
   )}
   {name === "chart" && <path d="M4 20V10m6 10V4m6 16v-7m4 7H2" />}
+  {name === "key" && (
+    <>
+      <circle cx="8" cy="15" r="4" />
+      <path d="m11 12 9-9m-3 3 3 3m-6 0 2 2" />
+    </>
+  )}
+  {name === "user" && (
+    <>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21a8 8 0 0 1 16 0" />
+    </>
+  )}
+  {name === "lock" && (
+    <>
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </>
+  )}
 </svg>
