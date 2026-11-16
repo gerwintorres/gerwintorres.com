@@ -1,0 +1,88 @@
+---
+import { hero } from "../../data/content";
+import { tx, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const roles = hero.roles.map((role) => tx(role, Astro.props.lang));
+---
+
+<p class="typed-card mono">
+  <span class="prompt" aria-hidden="true">
+    &gt;
+  </span>
+  <span class="visually-hidden">{roles.join(" · ")}</span>
+  <span class="typed" aria-hidden="true" data-roles={JSON.stringify(roles)}>
+    {roles[0]}
+  </span>
+  <span class="caret" aria-hidden="true"></span>
+</p>
+
+<script>
+  // Types each role, holds it, deletes it and moves to the next one.
+  const target = document.querySelector<HTMLElement>(".typed");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (target && !reduced) {
+    const roles: string[] = JSON.parse(target.dataset.roles ?? "[]");
+    let index = 0;
+    let length = roles[0]?.length ?? 0;
+    let deleting = true;
+
+    const tick = (): void => {
+      const word = roles[index] ?? "";
+      length += deleting ? -1 : 1;
+      target.textContent = word.slice(0, length);
+      let wait = deleting ? 35 : 75;
+      if (!deleting && length === word.length) {
+        deleting = true;
+        wait = 1800;
+      } else if (deleting && length === 0) {
+        deleting = false;
+        index = (index + 1) % roles.length;
+        wait = 350;
+      }
+      window.setTimeout(tick, wait);
+    };
+
+    window.setTimeout(tick, 2200);
+  }
+</script>
+
+<style>
+  .typed-card {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-width: min(100%, 34ch);
+    min-height: 48px;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    font-size: var(--text-base);
+    font-weight: 500;
+  }
+
+  .prompt {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .caret {
+    width: 2px;
+    height: 1.15em;
+    margin-left: -0.25rem;
+    background: var(--accent);
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

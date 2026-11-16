@@ -1,0 +1,396 @@
+---
+import { Image } from "astro:assets";
+import portrait from "../../assets/gerwin-portrait.png";
+import CvButton from "../ui/CvButton.astro";
+import Icon from "../ui/Icon.astro";
+import SocialLinks from "../ui/SocialLinks.astro";
+import TypedRoles from "./TypedRoles.astro";
+import { hero, profile } from "../../data/content";
+import { tx, useTranslations, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const [middleName, lastName] = profile.lastName.split(" ");
+---
+
+<section class="hero" id="home" aria-labelledby="hero-title">
+  <div class="panel" aria-hidden="true"></div>
+  <p class="watermark" aria-hidden="true">
+    {profile.initials}
+  </p>
+
+  <div class="rail" aria-hidden="true">
+    <span class="mono">01</span>
+    <span class="rail-line"></span>
+    <a href="#about" tabindex="-1">
+      {t("hero.next")}
+    </a>
+  </div>
+
+  <div class="intro">
+    <p class="status">
+      <span class="dot"></span>
+      {tx(hero.status, lang)}
+    </p>
+    <h1 id="hero-title" class="name">
+      <span>{profile.firstName}</span>
+      <span class="accent">{middleName}</span>
+      <span>{lastName}</span>
+    </h1>
+    <TypedRoles lang={lang} />
+    <p class="tagline">{tx(hero.tagline, lang)}</p>
+    <div class="actions">
+      <a class="button-primary" href="#projects">
+        {t("cta.projects")}
+        <Icon name="arrow-right" size={18} />
+      </a>
+      <CvButton lang={lang} />
+      <SocialLinks lang={lang} />
+    </div>
+  </div>
+
+  <Image
+    class="portrait"
+    src={portrait}
+    alt={profile.name}
+    widths={[320, 460, 610]}
+    sizes="(max-width: 960px) 70vw, 32vw"
+    loading="eager"
+    fetchpriority="high"
+  />
+
+  <div class="cards">
+    <a class="card card-featured" href={hero.featured.href}>
+      <span class="card-label mono">{tx(hero.featured.label, lang)}</span>
+      <span class="card-title">{tx(hero.featured.title, lang)}</span>
+      <span class="card-more">
+        {t("hero.viewProject")}
+        <span class="card-line"></span>
+        <Icon name="arrow-right" size={16} />
+      </span>
+    </a>
+
+    <div class="card card-stat">
+      <p class="stat-value">
+        <span data-count={hero.stat.value}>{hero.stat.value}</span>
+        {hero.stat.suffix}
+      </p>
+      <p class="stat-label">{tx(hero.stat.label, lang)}</p>
+    </div>
+
+    <a class="card card-about" href="#about">
+      <span>{tx(hero.aboutLink, lang)}</span>
+      <Icon name="arrow-right" size={18} />
+    </a>
+  </div>
+</section>
+
+<script>
+  // Counts the stat up from zero the first time it shows up.
+  const counter = document.querySelector<HTMLElement>("[data-count]");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Only animates when someone is looking; otherwise the server-rendered value stays.
+  if (counter && !reduced && document.visibilityState === "visible") {
+    const target = Number(counter.dataset.count);
+    const decimals = String(target).split(".")[1]?.length ?? 0;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      observer.disconnect();
+      const start = performance.now();
+      const step = (now: number): void => {
+        const progress = Math.min((now - start) / 1200, 1);
+        const eased = 1 - (1 - progress) ** 3;
+        counter.textContent = (target * eased).toFixed(decimals);
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      // If the tab goes to the background mid-count, the final value still lands.
+      window.setTimeout(() => (counter.textContent = target.toFixed(decimals)), 1500);
+    });
+    observer.observe(counter);
+  }
+</script>
+
+<style>
+  .hero {
+    --portrait-h: clamp(440px, calc(100svh - 150px), 720px);
+    --portrait-w: calc(var(--portrait-h) * 0.7176);
+    --side: calc(var(--portrait-w) / 2 + 1.5rem);
+
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(var(--portrait-h) + 2rem);
+    overflow: hidden;
+  }
+
+  .panel {
+    grid-area: 1 / 2;
+    background: linear-gradient(160deg, var(--panel-from) 0%, var(--panel-to) 100%);
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%;
+    left: clamp(2rem, 5vw, 5rem);
+    z-index: 0;
+    margin: 0;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: clamp(9rem, 22vw, 20rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 1;
+    opacity: 0.045;
+    transform: translateY(-50%);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .rail {
+    position: absolute;
+    top: 50%;
+    left: clamp(1rem, 2vw, 2rem);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: center;
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    transform: translateY(-50%);
+  }
+
+  .rail-line {
+    width: 2px;
+    height: 56px;
+    border-radius: 2px;
+    background: linear-gradient(var(--accent) 40%, var(--line) 40%);
+  }
+
+  .rail a {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: inherit;
+    letter-spacing: 0.2em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .intro {
+    position: relative;
+    z-index: 2;
+    grid-area: 1 / 1;
+    display: grid;
+    gap: var(--space-6);
+    align-content: center;
+    justify-items: start;
+    padding: var(--space-12) var(--side) var(--space-12) clamp(4rem, 7vw, 7rem);
+  }
+
+  .status {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 4px rgb(34 197 94 / 0.18);
+  }
+
+  .name {
+    display: grid;
+    font-size: clamp(2.5rem, 4.2vw, 4.75rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-transform: uppercase;
+  }
+
+  .name .accent {
+    color: var(--accent);
+  }
+
+  .tagline {
+    max-width: 46ch;
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .button-primary {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-6);
+    border-radius: var(--radius-pill);
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .button-primary :global(svg) {
+    color: var(--accent);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .button-primary:hover :global(svg) {
+    transform: translateX(4px);
+  }
+
+  .portrait {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    width: auto;
+    height: var(--portrait-h);
+    transform: translateX(-50%);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .cards {
+    position: relative;
+    z-index: 2;
+    grid-area: 1 / 2;
+    display: grid;
+    gap: var(--space-4);
+    align-content: center;
+    padding: var(--space-12) clamp(1.5rem, 4vw, 4rem) var(--space-12) var(--side);
+    color: var(--on-panel);
+  }
+
+  .card {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 0.06);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      background-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+
+  a.card:hover {
+    background: rgb(255 255 255 / 0.1);
+    transform: translateY(-3px);
+  }
+
+  .card-label {
+    color: var(--orange-400);
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .card-more {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    color: var(--on-panel-muted);
+    font-size: var(--text-sm);
+  }
+
+  .card-line {
+    flex: 0 0 32px;
+    height: 2px;
+    background: var(--orange-400);
+    transition: flex-basis var(--dur) var(--ease);
+  }
+
+  .card-featured:hover .card-line {
+    flex-basis: 56px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .stat-label {
+    color: var(--on-panel-muted);
+    font-size: var(--text-sm);
+  }
+
+  .card-about {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgb(0 0 0 / 0.22);
+    font-weight: 600;
+  }
+
+  @media (max-width: 960px) {
+    .hero {
+      --portrait-h: clamp(320px, 80vw, 460px);
+
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    .panel {
+      grid-area: 2 / 1 / 4 / 2;
+    }
+
+    .watermark,
+    .rail {
+      display: none;
+    }
+
+    .intro {
+      padding: var(--space-12) var(--gutter);
+    }
+
+    .portrait {
+      position: relative;
+      left: auto;
+      grid-area: 2 / 1;
+      justify-self: center;
+      margin-top: var(--space-8);
+      transform: none;
+    }
+
+    .cards {
+      grid-area: 3 / 1;
+      padding: var(--space-8) var(--gutter) var(--space-12);
+    }
+  }
+</style>
