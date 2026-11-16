@@ -7,6 +7,7 @@ import About from "./sections/About.astro";
 import Experience from "./sections/Experience.astro";
 import Projects from "./sections/Projects.astro";
 import Skills from "./sections/Skills.astro";
+import Education from "./sections/Education.astro";
 import { hero, profile } from "../data/content";
 import { tx, type Lang } from "../i18n/ui";
 
@@ -30,5 +31,6 @@ const { lang } = Astro.props;
     <Experience lang={lang} />
     <Projects lang={lang} />
     <Skills lang={lang} />
+    <Education lang={lang} />
   </main>
 </Base>
