@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import portrait from "../../assets/gerwin-portrait.png";
+import avatar from "../../assets/gerwin-avatar.png";
 import CvButton from "../ui/CvButton.astro";
 import Icon from "../ui/Icon.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
@@ -46,7 +46,7 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
         <div class="banner" aria-hidden="true"></div>
         <Image
           class="avatar"
-          src={portrait}
+          src={avatar}
           alt=""
           width={96}
           height={96}
@@ -153,7 +153,6 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
     border-radius: 50%;
     background: var(--panel-to);
     object-fit: cover;
-    object-position: 50% 8%;
   }
 
   h3 {
