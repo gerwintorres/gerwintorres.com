@@ -1,0 +1,163 @@
+---
+import Chips from "../ui/Chips.astro";
+import FlowDiagram from "../ui/FlowDiagram.astro";
+import Icon from "../ui/Icon.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import { projects, sections } from "../../data/content";
+import { tx, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="section" aria-labelledby="projects">
+  <div class="container">
+    <SectionHeading
+      id="projects"
+      eyebrow={tx(sections.projects.eyebrow, lang)}
+      title={tx(sections.projects.title, lang)}
+    />
+
+    <ul class="grid" role="list">
+      {projects.map((project, i) => (
+        <li class:list={["card reveal", { featured: i === 0 }]}>
+          <FlowDiagram steps={project.flow} lang={lang} />
+          <div class="body">
+            <p class="kind mono">{tx(project.kind, lang)}</p>
+            <h3>{tx(project.title, lang)}</h3>
+            <p class="summary">{tx(project.summary, lang)}</p>
+            <ul class="highlights" role="list">
+              {project.highlights.map((highlight) => (
+                <li>{tx(highlight, lang)}</li>
+              ))}
+            </ul>
+            <Chips items={project.stack} />
+            {project.links.length > 0 && (
+              <p class="links">
+                {project.links.map((link) => (
+                  <a href={link.href} target="_blank" rel="noopener">
+                    {tx(link.label, lang)}
+                    <Icon name="arrow-right" size={16} />
+                  </a>
+                ))}
+              </p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: var(--space-6);
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    transition: border-color var(--dur) var(--ease);
+  }
+
+  .card:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  }
+
+  .featured {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1.1fr;
+    grid-template-rows: auto;
+    align-items: center;
+  }
+
+  .body {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    padding: 0 var(--space-2) var(--space-2);
+  }
+
+  .kind {
+    color: var(--accent-text);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .summary,
+  .highlights {
+    color: var(--text-muted);
+  }
+
+  .highlights {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-2);
+    padding: 0;
+    font-size: var(--text-sm);
+    list-style: none;
+  }
+
+  .highlights li {
+    position: relative;
+    padding-left: var(--space-4);
+  }
+
+  .highlights li::before {
+    content: "";
+    position: absolute;
+    top: 0.6em;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  .links a {
+    display: inline-flex;
+    gap: var(--space-1);
+    align-items: center;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--accent-text);
+  }
+
+  @media (max-width: 860px) {
+    .grid,
+    .featured {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
