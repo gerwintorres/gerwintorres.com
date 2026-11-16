@@ -88,7 +88,8 @@ const sections: { id: string; key: UIKey }[] = [
     },
     { rootMargin: "-45% 0px -50% 0px" },
   );
-  links.forEach((_, id) => {
+  // The hero is watched too, so no link stays underlined back at the top of the page.
+  ["home", ...links.keys()].forEach((id) => {
     const section = id ? document.getElementById(id) : null;
     if (section) observer.observe(section);
   });
