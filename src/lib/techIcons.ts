@@ -73,6 +73,8 @@ export const brands: Record<string, BrandIcon> = {
   Railway: siRailway,
   Leaflet: siLeaflet,
   "Cloud Storage": siGooglecloudstorage,
+  "Google Cloud Storage": siGooglecloudstorage,
+  "Cloud Run": siGooglecloud,
 };
 
 // Concepts and products without a free logo.
@@ -89,6 +91,7 @@ export const generic: Record<string, IconName> = {
   Map: "map-pin",
   Locked: "lock",
   Spreadsheet: "board",
+  Alembic: "database",
   "LLM integrations": "sparkle",
   "Message queues": "queue",
   "Azure Service Bus": "queue",
