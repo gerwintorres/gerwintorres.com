@@ -1,0 +1,94 @@
+---
+import SocialLinks from "./ui/SocialLinks.astro";
+import { profile } from "../data/content";
+import { tx, useTranslations, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container inner">
+    <div class="who">
+      <span class="monogram" aria-hidden="true">
+        G<span>L</span>
+      </span>
+      <div>
+        <p class="name">{profile.name}</p>
+        <p class="role">{tx(profile.role, lang)}</p>
+      </div>
+    </div>
+    <SocialLinks lang={lang} />
+  </div>
+  <div class="container legal">
+    <p>
+      © {year} {profile.name}
+    </p>
+    <p>
+      {t("footer.built")} ·
+      <a href="https://github.com/gerwintorres/portfolio" target="_blank" rel="noopener">
+        {t("footer.source")}
+      </a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: var(--space-12) var(--space-8);
+    border-top: 1px solid var(--line);
+  }
+
+  .inner,
+  .legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .legal {
+    margin-top: var(--space-8);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .who {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .monogram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--navy-800);
+    color: var(--sand-50);
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  .monogram span {
+    color: var(--orange-400);
+  }
+
+  .name {
+    font-weight: 700;
+  }
+
+  .role {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+</style>
