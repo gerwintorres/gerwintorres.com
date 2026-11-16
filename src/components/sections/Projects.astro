@@ -24,7 +24,19 @@ const { lang } = Astro.props;
     <ul class="grid" role="list">
       {projects.map((project, i) => (
         <li class:list={["card reveal", { featured: i === 0 }]}>
-          <ArchDiagram diagram={project.architecture} lang={lang} />
+          <div class="visual">
+            <ArchDiagram diagram={project.architecture} lang={lang} />
+            {project.links.length > 0 && (
+              <p class="links">
+                {project.links.map((link) => (
+                  <a class="link-button" href={link.href} target="_blank" rel="noopener">
+                    <Icon name={link.icon ?? "external"} size={16} />
+                    {tx(link.label, lang)}
+                  </a>
+                ))}
+              </p>
+            )}
+          </div>
           <div class="body">
             <p class="kind mono">{tx(project.kind, lang)}</p>
             <h3>{tx(project.title, lang)}</h3>
@@ -35,16 +47,6 @@ const { lang } = Astro.props;
               ))}
             </ul>
             <Chips items={project.stack} />
-            {project.links.length > 0 && (
-              <p class="links">
-                {project.links.map((link) => (
-                  <a href={link.href} target="_blank" rel="noopener">
-                    {tx(link.label, lang)}
-                    <Icon name="arrow-right" size={16} />
-                  </a>
-                ))}
-              </p>
-            )}
           </div>
         </li>
       ))}
@@ -92,8 +94,7 @@ const { lang } = Astro.props;
   }
 
   .featured .body > .highlights,
-  .featured .body > :global(.chips),
-  .featured .body > .links {
+  .featured .body > :global(.chips) {
     grid-column: 2;
   }
 
@@ -152,23 +153,39 @@ const { lang } = Astro.props;
     background: var(--accent);
   }
 
+  .visual {
+    display: grid;
+    gap: var(--space-3);
+  }
+
   .links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-top: var(--space-2);
+    gap: var(--space-2);
+    justify-content: flex-end;
   }
 
-  .links a {
+  .link-button {
     display: inline-flex;
-    gap: var(--space-1);
+    gap: var(--space-2);
     align-items: center;
+    min-height: 40px;
+    padding-inline: var(--space-4);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--line));
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+    color: var(--text);
+    font-size: var(--text-sm);
     font-weight: 600;
     text-decoration: none;
+    transition:
+      background-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
   }
 
-  .links a:hover {
-    color: var(--accent-text);
+  .link-button:hover {
+    background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+    transform: translateY(-2px);
   }
 
   @media (max-width: 860px) {
