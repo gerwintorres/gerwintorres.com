@@ -4,6 +4,7 @@ import Header from "./Header.astro";
 import Hero from "./hero/Hero.astro";
 import TechBelt from "./hero/TechBelt.astro";
 import About from "./sections/About.astro";
+import Experience from "./sections/Experience.astro";
 import { hero, profile } from "../data/content";
 import { tx, type Lang } from "../i18n/ui";
 
@@ -24,5 +25,6 @@ const { lang } = Astro.props;
     <Hero lang={lang} />
     <TechBelt />
     <About lang={lang} />
+    <Experience lang={lang} />
   </main>
 </Base>
