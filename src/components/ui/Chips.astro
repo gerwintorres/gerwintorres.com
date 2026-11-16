@@ -1,15 +1,22 @@
 ---
+import TechIcon from "./TechIcon.astro";
+
 interface Props {
   items: readonly string[];
   tone?: "light" | "panel";
+  /** Show each technology's logo before its name. */
+  icons?: boolean;
 }
 
-const { items, tone = "light" } = Astro.props;
+const { items, tone = "light", icons = false } = Astro.props;
 ---
 
 <ul class:list={["chips", tone]} role="list">
   {items.map((item) => (
-    <li>{item}</li>
+    <li>
+      {icons && <TechIcon name={item} size={14} />}
+      {item}
+    </li>
   ))}
 </ul>
 
@@ -24,6 +31,9 @@ const { items, tone = "light" } = Astro.props;
   }
 
   li {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
     padding: 0.2rem 0.65rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-pill);
@@ -32,6 +42,15 @@ const { items, tone = "light" } = Astro.props;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     font-weight: 500;
+  }
+
+  li :global(.tech-icon) {
+    flex-shrink: 0;
+    transition: color var(--dur) var(--ease);
+  }
+
+  li:hover :global(.tech-icon) {
+    color: var(--brand, var(--accent));
   }
 
   .panel li {
