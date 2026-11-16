@@ -644,6 +644,7 @@ export const education: EducationItem[] = [
       es: "IV Simposio de Ciencia de Datos · Maestría en Investigación Operativa y Estadística, UTP",
     },
     period: "2026",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7523477426677485568/",
   },
 ];
 

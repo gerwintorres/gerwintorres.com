@@ -44,7 +44,7 @@ const kinds = {
               <p class="place">{tx(item.place, lang)}</p>
               {item.href && (
                 <p class="credential">
-                  {t("edu.credential")}
+                  {t(item.kind === "talk" ? "edu.post" : "edu.credential")}
                   <Icon name="external" size={16} />
                 </p>
               )}
