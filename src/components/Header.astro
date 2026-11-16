@@ -2,7 +2,6 @@
 import CvButton from "./ui/CvButton.astro";
 import Icon from "./ui/Icon.astro";
 import LangSwitch from "./LangSwitch.astro";
-import ThemeToggle from "./ThemeToggle.astro";
 import { pathInLang, useTranslations, type Lang, type UIKey } from "../i18n/ui";
 
 interface Props {
@@ -45,7 +44,6 @@ const sections: { id: string; key: UIKey }[] = [
 
     <div class="controls">
       <LangSwitch lang={lang} />
-      <ThemeToggle lang={lang} />
       <CvButton lang={lang} variant="solid" />
       <button class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false">
         <span class="visually-hidden">{t("nav.menu")}</span>
