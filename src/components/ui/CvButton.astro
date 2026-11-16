@@ -1,0 +1,49 @@
+---
+// Renders nothing until the CV for this language exists (see profile.cv in content.ts).
+import Icon from "./Icon.astro";
+import { profile } from "../../data/content";
+import { useTranslations, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+  variant?: "solid" | "outline";
+}
+
+const { lang, variant = "outline" } = Astro.props;
+const href = profile.cv[lang] ?? profile.cv[lang === "en" ? "es" : "en"];
+const t = useTranslations(lang);
+---
+
+{href && (
+  <a class:list={["cv-button", variant]} href={href} download>
+    <Icon name="download" size={18} />
+    {t("cta.cv")}
+  </a>
+)}
+
+<style>
+  .cv-button {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-4);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .solid {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .outline {
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .outline:hover {
+    border-color: var(--accent);
+  }
+</style>
