@@ -25,6 +25,8 @@ export interface Experience {
 export interface Project {
   slug: string;
   kind: Localized;
+  /** Steps of the data flow, drawn as a diagram instead of screenshots. */
+  flow: Localized[];
   title: Localized;
   summary: Localized;
   highlights: Localized[];
@@ -301,6 +303,13 @@ export const experience: Experience[] = [
 export const projects: Project[] = [
   {
     slug: "dnp-whatsapp-channel",
+    flow: [
+      "WhatsApp",
+      { en: "Signed webhook", es: "Webhook firmado" },
+      { en: "Queue per citizen", es: "Cola por ciudadano" },
+      "Worker",
+      { en: "AI assistant", es: "Asistente de IA" },
+    ],
     kind: { en: "Professional case", es: "Caso profesional" },
     title: {
       en: "Nationwide WhatsApp channel for the National Planning Department",
@@ -329,6 +338,13 @@ export const projects: Project[] = [
   },
   {
     slug: "pereira-public-policy-system",
+    flow: [
+      { en: "19 agencies", es: "19 dependencias" },
+      { en: "Capture app", es: "Aplicativo de registro" },
+      "MySQL",
+      { en: "Public dashboard", es: "Tablero público" },
+      { en: "Reports", es: "Informes" },
+    ],
     kind: { en: "Professional case", es: "Caso profesional" },
     title: {
       en: "Public policy tracking system for Pereira City Hall",
@@ -362,6 +378,13 @@ export const projects: Project[] = [
   },
   {
     slug: "purchase-order-automation",
+    flow: [
+      { en: "ERP exports", es: "Exportaciones del ERP" },
+      { en: "Cleaning", es: "Limpieza" },
+      { en: "Demand", es: "Demanda" },
+      { en: "Best price", es: "Mejor precio" },
+      { en: "Order", es: "Pedido" },
+    ],
     kind: { en: "Professional case", es: "Caso profesional" },
     title: {
       en: "Purchase-order automation for a spare-parts importer",
@@ -386,6 +409,13 @@ export const projects: Project[] = [
   },
   {
     slug: "reorder",
+    flow: [
+      "CSV",
+      "FastAPI",
+      { en: "Domain", es: "Dominio" },
+      "PostgreSQL",
+      { en: "Estimate", es: "Estimación" },
+    ],
     kind: { en: "Personal project", es: "Proyecto personal" },
     title: "reorder",
     summary: {
@@ -416,6 +446,12 @@ export const projects: Project[] = [
   },
   {
     slug: "earthquake-damage-reporting",
+    flow: [
+      { en: "Field report", es: "Reporte de campo" },
+      { en: "Photo + GPS", es: "Foto + GPS" },
+      { en: "Priority", es: "Prioridad" },
+      { en: "Live map", es: "Mapa en vivo" },
+    ],
     kind: { en: "Volunteer", es: "Voluntariado" },
     title: {
       en: "Damage reporting after the August 2026 earthquake",

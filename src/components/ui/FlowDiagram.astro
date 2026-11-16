@@ -1,0 +1,77 @@
+---
+// Draws a project's data flow as connected steps; a highlight travels along it.
+import { tx, type Lang, type Localized } from "../../i18n/ui";
+
+interface Props {
+  steps: Localized[];
+  lang: Lang;
+}
+
+const { steps, lang } = Astro.props;
+---
+
+<ol class="flow" role="list" style={`--n: ${steps.length}`}>
+  {steps.map((step, i) => (
+    <li class="step mono" style={`--i: ${i}`}>
+      {tx(step, lang)}
+    </li>
+  ))}
+</ol>
+
+<style>
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    align-items: center;
+    margin: 0;
+    padding: var(--space-6);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.12) 1px, transparent 0) 0 0 / 18px 18px,
+      linear-gradient(160deg, var(--panel-from), var(--panel-to));
+    list-style: none;
+  }
+
+  .step {
+    position: relative;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid rgb(255 255 255 / 0.18);
+    border-radius: var(--radius-sm);
+    background: rgb(255 255 255 / 0.06);
+    color: var(--on-panel);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    white-space: nowrap;
+    animation: travel calc(var(--n) * 700ms) linear infinite;
+    animation-delay: calc(var(--i) * 700ms);
+  }
+
+  .step:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    top: 50%;
+    right: calc(-1 * var(--space-6) + 4px);
+    color: var(--orange-400);
+    transform: translateY(-50%);
+  }
+
+  @keyframes travel {
+    0%,
+    100% {
+      border-color: rgb(255 255 255 / 0.18);
+      box-shadow: none;
+    }
+
+    8%,
+    20% {
+      border-color: var(--orange-400);
+      box-shadow: 0 0 0 3px rgb(242 128 63 / 0.2);
+    }
+
+    30% {
+      border-color: rgb(255 255 255 / 0.18);
+      box-shadow: none;
+    }
+  }
+</style>
