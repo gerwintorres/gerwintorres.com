@@ -36,6 +36,7 @@ const t = useTranslations(lang);
           theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         }
         document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.add("js");
       })();
     </script>
   </head>
@@ -44,6 +45,23 @@ const t = useTranslations(lang);
       {t("a11y.skip")}
     </a>
     <slot />
+    <script>
+      // Fades sections in as they enter the viewport.
+      const items = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("in");
+            observer.unobserve(entry.target);
+          });
+        },
+        { rootMargin: "0px 0px -8% 0px" },
+      );
+      items.forEach((item) => observer.observe(item));
+      // Safety net: if the browser never reports an intersection, show everything.
+      window.setTimeout(() => items.forEach((item) => item.classList.add("in")), 2500);
+    </script>
   </body>
 </html>
 

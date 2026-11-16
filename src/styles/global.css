@@ -85,6 +85,27 @@ kbd,
   white-space: nowrap;
 }
 
+.section {
+  padding-block: clamp(4rem, 10vw, 7rem);
+}
+
+.section.alt {
+  background: var(--surface-2);
+}
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 600ms var(--ease),
+    transform 600ms var(--ease);
+}
+
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
