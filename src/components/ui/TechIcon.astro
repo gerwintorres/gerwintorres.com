@@ -1,93 +1,16 @@
 ---
-// Logo for a technology: the brand mark from simple-icons when there is one, otherwise a generic icon.
-import {
-  siDocker,
-  siFastapi,
-  siGit,
-  siGithubactions,
-  siGooglecloud,
-  siGraphql,
-  siLinux,
-  siMake,
-  siMysql,
-  siOpenapiinitiative,
-  siPandas,
-  siPostgresql,
-  siPytest,
-  siPython,
-  siQt,
-  siQuarto,
-  siSqlalchemy,
-  siStreamlit,
-  siTraefikproxy,
-  siWhatsapp,
-  type SimpleIcon,
-} from "simple-icons";
-import Icon, { type IconName } from "./Icon.astro";
+// Logo for a technology: the brand mark when there is one, otherwise a generic icon.
+import Icon from "./Icon.astro";
+import { brands, generic, techColor } from "../../lib/techIcons";
 
 interface Props {
   name: string;
   size?: number;
 }
 
-const brands: Record<string, SimpleIcon> = {
-  Python: siPython,
-  FastAPI: siFastapi,
-  REST: siOpenapiinitiative,
-  "REST APIs": siOpenapiinitiative,
-  "WhatsApp Cloud API": siWhatsapp,
-  PySide: siQt,
-  QML: siQt,
-  GraphQL: siGraphql,
-  PostgreSQL: siPostgresql,
-  MySQL: siMysql,
-  SQLAlchemy: siSqlalchemy,
-  pandas: siPandas,
-  Docker: siDocker,
-  Linux: siLinux,
-  Traefik: siTraefikproxy,
-  "GitHub Actions": siGithubactions,
-  GCP: siGooglecloud,
-  "Google Cloud": siGooglecloud,
-  pytest: siPytest,
-  Git: siGit,
-  Streamlit: siStreamlit,
-  Quarto: siQuarto,
-  Make: siMake,
-};
-
-// Concepts and products without a free logo (Microsoft marks are not in simple-icons).
-const generic: Record<string, IconName> = {
-  Webhooks: "webhook",
-  "Event-driven design": "bolt",
-  "Event-driven": "bolt",
-  OpenAI: "sparkle",
-  Whisper: "sparkle",
-  Matplotlib: "chart",
-  "LLM integrations": "sparkle",
-  "Message queues": "queue",
-  "Azure Service Bus": "queue",
-  "Background workers": "gear",
-  SQL: "database",
-  ETL: "pipeline",
-  "Integration tests": "check",
-  "Code review": "code",
-  "CI/CD": "loop",
-  IaC: "code",
-  Azure: "cloud",
-  "Monday.com": "board",
-};
-
-/** Brand colors too dark to read on the navy background fall back to the accent. */
-function readable(hex: string): string | undefined {
-  const [r = 0, g = 0, b = 0] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
-  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return luminance > 0.25 ? `#${hex}` : undefined;
-}
-
 const { name, size = 18 } = Astro.props;
 const brand = brands[name];
-const brandColor = brand ? readable(brand.hex) : undefined;
+const brandColor = techColor(name);
 const fallback = generic[name];
 ---
 
