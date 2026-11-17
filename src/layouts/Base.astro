@@ -2,16 +2,47 @@
 import "@fontsource-variable/plus-jakarta-sans";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
-import { useTranslations, type Lang } from "../i18n/ui";
+import { experience, profile } from "../data/content";
+import { languages, pathInLang, tx, useTranslations, type Lang } from "../i18n/ui";
 
 interface Props {
   lang: Lang;
   title: string;
   description: string;
+  /** Keep the page out of search results (the 404 page). */
+  noindex?: boolean;
 }
 
-const { lang, title, description } = Astro.props;
+const { lang, title, description, noindex = false } = Astro.props;
 const t = useTranslations(lang);
+
+// Absolute URLs for search engines and link previews (site is set in astro.config.mjs).
+const site = Astro.site ?? new URL("https://gerwintorres.com");
+const url = (path: string) => new URL(path, site).href;
+const canonical = url(Astro.url.pathname);
+const alternates = (Object.keys(languages) as Lang[]).map((code) => ({
+  code,
+  href: url(pathInLang(Astro.url.pathname, code)),
+}));
+const ogImage = url(`/og-${lang}.png`);
+const ogLocale: Record<Lang, string> = { en: "en_US", es: "es_CO" };
+
+// Structured data so search engines know who the site is about. The email stays out on purpose.
+const currentJob = experience.find((job) => job.end === null);
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  alternateName: profile.shortName,
+  url: url("/"),
+  image: ogImage,
+  jobTitle: tx(profile.role, lang),
+  ...(currentJob && {
+    worksFor: { "@type": "Organization", name: currentJob.company, url: currentJob.website },
+  }),
+  address: { "@type": "PostalAddress", addressLocality: "Pereira", addressCountry: "CO" },
+  sameAs: [profile.linkedin, profile.github],
+};
 ---
 
 <!doctype html>
@@ -24,6 +55,36 @@ const t = useTranslations(lang);
     <meta name="theme-color" content="#0f1726" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    {noindex ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <>
+        <link rel="canonical" href={canonical} />
+        {alternates.map((alt) => (
+          <link rel="alternate" hreflang={alt.code} href={alt.href} />
+        ))}
+        <link rel="alternate" hreflang="x-default" href={url("/")} />
+      </>
+    )}
+
+    <!-- Link previews (LinkedIn, WhatsApp, Slack, X) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    {alternates
+      .filter((alt) => alt.code !== lang)
+      .map((alt) => (
+        <meta property="og:locale:alternate" content={ogLocale[alt.code]} />
+      ))}
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
     <!-- Lets CSS know JavaScript runs, so reveal animations never hide content without it. -->
     <script is:inline>
       document.documentElement.classList.add("js");
