@@ -76,7 +76,7 @@ const [middleName, lastName] = profile.lastName.split(" ");
 
     <div class="card card-stat">
       <p class="stat-value">
-        {hero.stat.prefix}
+        <span class="stat-sign">{hero.stat.prefix}</span>
         <span data-count={hero.stat.value}>{hero.stat.value}</span>
         {hero.stat.suffix}
       </p>
@@ -354,6 +354,10 @@ const [middleName, lastName] = profile.lastName.split(" ");
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1;
+  }
+
+  .stat-sign {
+    color: var(--accent);
   }
 
   .stat-label {
