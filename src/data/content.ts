@@ -706,10 +706,10 @@ export const projects: Project[] = [
       nodes: [
         {
           id: "departments",
-          label: { en: "19 departments", es: "19 secretarías" },
-          tech: "58 users",
+          label: { en: "Departments", es: "Secretarías" },
+          tech: "19 · 58 users",
           icon: "User",
-          x: 10,
+          x: 10.5,
           y: 30,
           step: 0,
           color: "#cbd5e1",
@@ -757,7 +757,7 @@ export const projects: Project[] = [
           label: "main",
           tech: "GitHub",
           icon: "GitHub",
-          x: 10,
+          x: 10.5,
           y: 72,
           step: 5,
           color: "#e2e8f0",
