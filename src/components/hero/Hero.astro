@@ -44,11 +44,7 @@ const [middleName, lastName] = profile.lastName.split(" ");
     <TypedRoles lang={lang} />
     <p class="tagline">{tx(hero.tagline, lang)}</p>
     <div class="actions">
-      <a class="button-primary" href="#projects">
-        {t("cta.projects")}
-        <Icon name="arrow-right" size={18} />
-      </a>
-      <CvButton lang={lang} />
+      <CvButton lang={lang} variant="solid" />
       <SocialLinks lang={lang} />
     </div>
   </div>
@@ -83,8 +79,8 @@ const [middleName, lastName] = profile.lastName.split(" ");
       <p class="stat-label">{tx(hero.stat.label, lang)}</p>
     </div>
 
-    <a class="card card-about" href="#about">
-      <span>{tx(hero.aboutLink, lang)}</span>
+    <a class="card card-link" href="#projects">
+      <span>{t("cta.projects")}</span>
       <Icon name="arrow-right" size={18} />
     </a>
   </div>
@@ -241,6 +237,8 @@ const [middleName, lastName] = profile.lastName.split(" ");
     }
   }
 
+  /* The CV download leads, with the email, GitHub and LinkedIn links beside it; they move
+     under it when the column beside the portrait is too narrow. */
   .actions {
     display: flex;
     flex-wrap: wrap;
@@ -248,27 +246,25 @@ const [middleName, lastName] = profile.lastName.split(" ");
     align-items: center;
   }
 
-  .button-primary {
-    display: inline-flex;
-    gap: var(--space-2);
-    align-items: center;
-    min-height: 44px;
-    padding-inline: var(--space-6);
-    border-radius: var(--radius-pill);
-    background: var(--text);
-    color: var(--bg);
-    font-weight: 600;
-    text-decoration: none;
-    transition: transform var(--dur-fast) var(--ease);
-  }
+  /* With a mouse, a tighter button and slightly smaller circles let the four fit on one
+     line from 1280 px; touch screens keep the 44 px targets. */
+  @media (min-width: 961px) {
+    .actions {
+      gap: var(--space-2);
+    }
 
-  .button-primary :global(svg) {
-    color: var(--accent);
-    transition: transform var(--dur) var(--ease);
-  }
+    .actions :global(.cv-button) {
+      padding-inline: var(--space-3);
+    }
 
-  .button-primary:hover :global(svg) {
-    transform: translateX(4px);
+    .actions :global(.social) {
+      gap: 6px;
+    }
+
+    .actions :global(.social-link) {
+      width: 40px;
+      height: 40px;
+    }
   }
 
   .portrait {
@@ -365,7 +361,7 @@ const [middleName, lastName] = profile.lastName.split(" ");
     font-size: var(--text-sm);
   }
 
-  .card-about {
+  .card-link {
     display: flex;
     justify-content: space-between;
     align-items: center;

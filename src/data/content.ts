@@ -206,7 +206,6 @@ export const hero = {
       es: "atenciones a ciudadanos registradas en 2025 en un sistema que construí para la Alcaldía de Pereira",
     },
   },
-  aboutLink: { en: "About me", es: "Sobre mí" },
   // Logos come from simple-icons when there is one; the rest show their name only.
   belt: [
     "Python",
