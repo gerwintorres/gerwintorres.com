@@ -49,16 +49,22 @@ export interface ArchNode {
   icon?: string;
   x: number;
   y: number;
-  /** Position in the request path; nodes without a step stay as context. */
-  step?: number;
+  /** Beat(s) of the request path where the box lights up; boxes without one stay as context.
+   *  A box the request passes through twice (going and coming back) takes a list. */
+  step?: Steps;
   /** Tint of the box; defaults to the technology's brand color. */
   color?: string;
 }
 
+/** One beat, or several when the request passes through the same box or link again. */
+export type Steps = number | number[];
+
 export interface ArchEdge {
   from: string;
   to: string;
-  step?: number;
+  step?: Steps;
+  /** Corner points (x, y in %) for a link that has to go around other boxes, like a reply. */
+  via?: [number, number][];
 }
 
 export interface ArchGroup {
