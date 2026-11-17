@@ -31,11 +31,27 @@ const t = useTranslations(lang);
     border-radius: var(--radius-pill);
     font-weight: 600;
     text-decoration: none;
+    transition:
+      background-color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease),
+      color var(--dur-fast) var(--ease);
+  }
+
+  .cv-button :global(svg) {
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .cv-button:hover :global(svg) {
+    transform: translateY(2px);
   }
 
   .solid {
     background: var(--text);
     color: var(--bg);
+  }
+
+  .solid:hover {
+    background: var(--accent);
   }
 
   .outline {
