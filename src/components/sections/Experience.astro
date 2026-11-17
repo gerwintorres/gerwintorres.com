@@ -1,5 +1,6 @@
 ---
 import Chips from "../ui/Chips.astro";
+import Icon from "../ui/Icon.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import { experience, sections } from "../../data/content";
 import { tx, useTranslations, type Lang, type Localized } from "../../i18n/ui";
@@ -37,6 +38,7 @@ interface Entry {
   summary: Localized;
   highlights: Localized[];
   stack: string[];
+  website?: string;
 }
 
 const entries: Entry[] = experience.flatMap((job) => [
@@ -53,6 +55,7 @@ const entries: Entry[] = experience.flatMap((job) => [
     summary: job.summary,
     highlights: job.highlights,
     stack: job.stack,
+    website: job.website,
   },
   ...(job.clients ?? []).map((client) => ({
     id: `${job.id}-${client.id}`,
@@ -148,6 +151,12 @@ const entries: Entry[] = experience.flatMap((job) => [
             {entry.meta.map((m) => (
               <span>{tx(m, lang)}</span>
             ))}
+            {entry.website && (
+              <a class="verify" href={entry.website} target="_blank" rel="noopener">
+                {t("xp.verify")}
+                <Icon name="external" size={13} />
+              </a>
+            )}
           </p>
           <p class="summary">{tx(entry.summary, lang)}</p>
           <ul class="highlights" role="list">
@@ -320,6 +329,20 @@ const entries: Entry[] = experience.flatMap((job) => [
     gap: var(--space-2) var(--space-4);
     color: var(--text-muted);
     font-size: var(--text-sm);
+  }
+
+  .verify {
+    display: inline-flex;
+    gap: 0.3em;
+    align-items: center;
+    color: var(--accent-text);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .verify:hover {
+    text-decoration: underline;
   }
 
   .summary {
