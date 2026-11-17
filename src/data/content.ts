@@ -794,8 +794,8 @@ export const projects: Project[] = [
     },
     highlights: [
       {
-        en: "In 2025: 58 officials from 19 city departments, 14 policies, COP 218 billion in allocated budget and 1.1 million citizen interactions.",
-        es: "En 2025: 58 funcionarios de 19 secretarías, 14 políticas, COP 218 mil millones de presupuesto apropiado y 1,1 millones de atenciones a ciudadanos.",
+        en: "In 2025: 58 officials from 19 city departments, 14 policies and 1.1 million citizen interactions.",
+        es: "En 2025: 58 funcionarios de 19 secretarías, 14 políticas y 1,1 millones de atenciones a ciudadanos.",
       },
       {
         en: "Validation at the point of capture and an automated check that keeps the dashboard and its reports consistent across 106 scenarios.",
