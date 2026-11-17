@@ -462,7 +462,7 @@ export const projects: Project[] = [
           icon: "WhatsApp Cloud API",
           x: 14,
           y: 31,
-          step: 0,
+          step: [0, 7],
         },
         {
           id: "webhook",
@@ -491,7 +491,7 @@ export const projects: Project[] = [
           icon: "Background workers",
           x: 68,
           y: 31,
-          step: 3,
+          step: [3, 6],
           color: "#3a96dd",
         },
         {
@@ -501,7 +501,7 @@ export const projects: Project[] = [
           icon: "LLM integrations",
           x: 86,
           y: 31,
-          step: 4,
+          step: 5,
           color: "#a78bfa",
         },
         {
@@ -511,7 +511,7 @@ export const projects: Project[] = [
           icon: "SQL",
           x: 68,
           y: 71,
-          step: 5,
+          step: 4,
           color: "#2dd4bf",
         },
         {
@@ -537,8 +537,18 @@ export const projects: Project[] = [
         { from: "citizen", to: "webhook", step: 1 },
         { from: "webhook", to: "queue", step: 2 },
         { from: "queue", to: "worker", step: 3 },
-        { from: "worker", to: "assistant", step: 4 },
-        { from: "worker", to: "history", step: 5 },
+        { from: "worker", to: "history", step: 4 },
+        { from: "worker", to: "assistant", step: [5, 6] },
+        {
+          from: "worker",
+          to: "citizen",
+          step: 7,
+          via: [
+            [64, 31],
+            [64, 50],
+            [14, 50],
+          ],
+        },
       ],
     },
     kind: { en: "Professional case", es: "Caso profesional" },
