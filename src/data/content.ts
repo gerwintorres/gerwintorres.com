@@ -182,8 +182,8 @@ export const hero = {
     { en: "AI-first development", es: "Desarrollo AI-First" },
   ] satisfies Localized[],
   tagline: {
-    en: "I build Python systems that people actually use: APIs, integrations and data pipelines that run in production.",
-    es: "Construyo sistemas en Python que la gente usa de verdad: APIs, integraciones y flujos de datos que corren en producción.",
+    en: "I design backend services and data systems in Python and take them safely to production with FastAPI, Docker and CI/CD, on-premise or in the cloud.",
+    es: "Diseño servicios backend y sistemas de datos en Python y los llevo a producción de forma segura con FastAPI, Docker y CI/CD, en servidores propios o en la nube.",
   },
   featured: {
     label: { en: "Latest project", es: "Proyecto más reciente" },
