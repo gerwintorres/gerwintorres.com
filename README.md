@@ -1,4 +1,4 @@
-# portfolio
+# gerwintorres.com
 
 Personal website of Gerwin Lambraño Torres, Python backend engineer. It shows the projects I have built, the stack I work with and how to reach me, in English and Spanish.
 
