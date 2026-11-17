@@ -28,7 +28,7 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
     <div class="grid">
       <div class="text reveal">
         <p class="lead">
-          {tx(contact.seeking, lang)}
+          <span class="seeking">{tx(contact.seeking, lang)}</span>
           <strong class="role-line">
             {tx(contact.role, lang)
               .split(" | ")
@@ -109,32 +109,37 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
 <style>
   .grid {
     display: grid;
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: 1fr 360px;
     gap: clamp(2rem, 6vw, 5rem);
     align-items: center;
-    max-width: 960px;
+    max-width: 1040px;
     margin-inline: auto;
   }
 
   .text {
     display: grid;
     gap: var(--space-6);
+    container: contact-text / inline-size;
   }
 
   .lead {
+    display: grid;
+    gap: var(--space-1);
     font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: 700;
-    line-height: 1.35;
+    line-height: 1.25;
   }
 
+  .seeking {
+    font-size: var(--text-lg);
+    font-weight: 600;
+  }
+
+  /* The role stays on one line, shrinking a little when the column is narrow
+     (it is about 24 times as wide as its font size). */
   .role-line {
-    display: block;
     color: var(--accent-text);
-  }
-
-  /* Each title stays whole; a narrow screen breaks the line at the bar. */
-  .part {
+    font-size: min(var(--text-xl), 4cqi);
+    font-weight: 800;
     white-space: nowrap;
   }
 
@@ -143,9 +148,26 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
     font-weight: 400;
   }
 
+  /* Where one line would get too small, each title gets its own line and the bar goes away. */
+  @container contact-text (width < 430px) {
+    .role-line {
+      font-size: var(--text-xl);
+      white-space: normal;
+    }
+
+    .part {
+      display: block;
+    }
+
+    .sep {
+      display: none;
+    }
+  }
+
   .pitch {
-    color: var(--text-muted);
+    color: var(--text);
     font-size: var(--text-lg);
+    line-height: 1.55;
   }
 
   .note {
