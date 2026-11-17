@@ -12,7 +12,8 @@
     "check": "astro check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "astro": "astro"
+    "astro": "astro",
+    "og": "sh scripts/og/build.sh"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
