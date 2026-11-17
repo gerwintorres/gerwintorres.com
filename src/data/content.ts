@@ -38,6 +38,8 @@ export interface Experience {
   highlights: Localized[];
   stack: string[];
   clients?: ClientWork[];
+  /** The company's own site, shown as a small link so anyone can check it exists. */
+  website?: string;
 }
 
 /** A box in a project's architecture diagram. x and y are percentages of the diagram. */
@@ -247,6 +249,7 @@ export const experience: Experience[] = [
   {
     id: "oidata",
     company: "oiDATA",
+    website: "https://oidata.com.co/",
     role: { en: "Software Engineer", es: "Ingeniero de Software" },
     type: { en: "Full-time · Hybrid", es: "Tiempo completo · Híbrido" },
     location: "Pereira, Colombia",
