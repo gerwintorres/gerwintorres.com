@@ -328,8 +328,8 @@ export const experience: Experience[] = [
         },
         highlights: [
           {
-            en: "Led the capture app and the latest version of the dashboard: 58 officials from 19 agencies report on 14 public policies.",
-            es: "Lideré el aplicativo de registro y la última versión del tablero: 58 funcionarios de 19 dependencias reportan 14 políticas públicas.",
+            en: "Led the capture app and the latest version of the dashboard: 58 officials from 19 city departments report on 14 public policies.",
+            es: "Lideré el aplicativo de registro y la última versión del tablero: 58 funcionarios de 19 secretarías reportan 14 políticas públicas.",
           },
           {
             en: "Validation at the point of capture and an automated check that keeps the dashboard and its reports consistent across 106 scenarios.",
@@ -686,8 +686,8 @@ export const projects: Project[] = [
     architecture: {
       aspect: 1.75,
       summary: {
-        en: "Officials from 19 agencies report through a capture app into MySQL; a public dashboard and automated reports read from it. Every change on main is built and deployed to the city's Linux servers behind Traefik.",
-        es: "Funcionarios de 19 dependencias reportan en un aplicativo que guarda en MySQL; un tablero público e informes automáticos leen de ahí. Cada cambio en main se construye y se despliega en los servidores Linux de la Alcaldía detrás de Traefik.",
+        en: "Officials from 19 city departments report through a capture app into MySQL; a public dashboard and automated reports read from it. Every change on main is built and deployed to the city's Linux servers behind Traefik.",
+        es: "Funcionarios de 19 secretarías reportan en un aplicativo que guarda en MySQL; un tablero público e informes automáticos leen de ahí. Cada cambio en main se construye y se despliega en los servidores Linux de la Alcaldía detrás de Traefik.",
       },
       groups: [
         {
@@ -702,8 +702,8 @@ export const projects: Project[] = [
       ],
       nodes: [
         {
-          id: "agencies",
-          label: { en: "19 agencies", es: "19 dependencias" },
+          id: "departments",
+          label: { en: "19 departments", es: "19 secretarías" },
           tech: "58 users",
           icon: "User",
           x: 10,
@@ -771,7 +771,7 @@ export const projects: Project[] = [
         { id: "traefik", label: "HTTPS", tech: "Traefik", icon: "Traefik", x: 49, y: 72, step: 7 },
       ],
       edges: [
-        { from: "agencies", to: "capture", step: 1 },
+        { from: "departments", to: "capture", step: 1 },
         { from: "capture", to: "mysql", step: 2 },
         { from: "mysql", to: "dashboard", step: 3 },
         { from: "dashboard", to: "citizens", step: 4 },
@@ -791,8 +791,8 @@ export const projects: Project[] = [
     },
     highlights: [
       {
-        en: "In 2025: 58 officials from 19 agencies, 14 policies, COP 218 billion in allocated budget and 1.1 million citizen interactions.",
-        es: "En 2025: 58 funcionarios de 19 dependencias, 14 políticas, COP 218 mil millones de presupuesto apropiado y 1,1 millones de atenciones a ciudadanos.",
+        en: "In 2025: 58 officials from 19 city departments, 14 policies, COP 218 billion in allocated budget and 1.1 million citizen interactions.",
+        es: "En 2025: 58 funcionarios de 19 secretarías, 14 políticas, COP 218 mil millones de presupuesto apropiado y 1,1 millones de atenciones a ciudadanos.",
       },
       {
         en: "Validation at the point of capture and an automated check that keeps the dashboard and its reports consistent across 106 scenarios.",
