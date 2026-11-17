@@ -70,10 +70,12 @@ const kinds = {
     display: grid;
   }
 
+  /* Cards in a row share their height; the link sits at the bottom of each one so it
+     lines up across cards whatever the length of the title. */
   .card {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-3);
-    align-content: start;
     padding: var(--space-6);
     border: 1px solid var(--line);
     border-top: 3px solid var(--accent);
@@ -129,7 +131,8 @@ const kinds = {
     display: inline-flex;
     gap: var(--space-2);
     align-items: center;
-    margin-top: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-2);
     color: var(--accent-text);
     font-size: var(--text-sm);
     font-weight: 600;
