@@ -233,6 +233,14 @@ const [middleName, lastName] = profile.lastName.split(" ");
     font-size: var(--text-lg);
   }
 
+  /* Small laptops and tablets in landscape: the column beside the portrait is narrow,
+     so a slightly smaller summary keeps the buttons on the first screen. */
+  @media (min-width: 961px) and (max-width: 1199px) {
+    .tagline {
+      font-size: var(--text-base);
+    }
+  }
+
   .actions {
     display: flex;
     flex-wrap: wrap;
