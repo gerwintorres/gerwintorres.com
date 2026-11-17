@@ -13,6 +13,18 @@ const [emailUser, emailDomain] = profile.email.split("@");
 
 <ul class="social" role="list">
   <li>
+    <!-- The address is put together in the browser so scrapers don't find it in the HTML. -->
+    <a
+      class="social-link"
+      href="#contact"
+      data-email-user={emailUser}
+      data-email-domain={emailDomain}
+      aria-label={t("cta.email")}
+    >
+      <Icon name="mail" />
+    </a>
+  </li>
+  <li>
     <a class="social-link" href={profile.github} target="_blank" rel="noopener" aria-label="GitHub">
       <Icon name="github" />
     </a>
@@ -26,18 +38,6 @@ const [emailUser, emailDomain] = profile.email.split("@");
       aria-label="LinkedIn"
     >
       <Icon name="linkedin" />
-    </a>
-  </li>
-  <li>
-    <!-- The address is put together in the browser so scrapers don't find it in the HTML. -->
-    <a
-      class="social-link"
-      href="#contact"
-      data-email-user={emailUser}
-      data-email-domain={emailDomain}
-      aria-label={t("cta.email")}
-    >
-      <Icon name="mail" />
     </a>
   </li>
 </ul>
