@@ -102,10 +102,13 @@ const timeline = [
     margin: var(--space-6) 0 0;
   }
 
+  /* The figure sits above its label; anchoring both to the top keeps the three figures
+     level even when one label wraps to more lines (as in Spanish). */
   .stats div {
     display: flex;
     flex-direction: column-reverse;
     gap: var(--space-1);
+    justify-content: flex-end;
   }
 
   .stats dt {
