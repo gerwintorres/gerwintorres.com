@@ -32,9 +32,15 @@ h3,
 h4 {
   margin: 0;
   font-family: var(--font-display);
+  font-stretch: var(--stretch-title);
   line-height: 1.1;
   letter-spacing: -0.02em;
   text-wrap: balance;
+}
+
+h1,
+h2 {
+  font-stretch: var(--stretch-display);
 }
 
 p {
