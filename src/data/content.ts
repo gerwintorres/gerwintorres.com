@@ -166,7 +166,11 @@ export const profile = {
   github: "https://github.com/gerwintorres",
   // Put the PDFs in public/cv/ and set the paths, e.g. "/cv/gerwin-lambrano-cv-en.pdf".
   // While a value is null, the "Download CV" buttons stay hidden.
-  cv: { en: null, es: null } as Record<Lang, string | null>,
+  // Web copies of the CV, without the phone number (built from the private sources).
+  cv: {
+    en: "/cv/Gerwin-Torres-CV-EN.pdf",
+    es: "/cv/Gerwin-Torres-CV-ES.pdf",
+  } as Record<Lang, string | null>,
 } as const;
 
 export const hero = {
