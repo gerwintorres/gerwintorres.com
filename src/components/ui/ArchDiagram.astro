@@ -1,8 +1,8 @@
 ---
 // A project's architecture: boxes tinted by technology, the platform they run on, links between
-// them, and a highlight that walks the request path step by step.
+// them, and a highlight that walks the request path beat by beat, including the way back.
 import TechIcon from "./TechIcon.astro";
-import type { Architecture } from "../../data/content";
+import type { Architecture, Steps } from "../../data/content";
 import { tx, type Lang } from "../../i18n/ui";
 import { techColor } from "../../lib/techIcons";
 
@@ -13,14 +13,21 @@ interface Props {
 
 const { diagram, lang } = Astro.props;
 const byId = new Map(diagram.nodes.map((node) => [node.id, node]));
-const steps = Math.max(0, ...diagram.nodes.map((node) => node.step ?? 0)) + 1;
+const list = (steps?: Steps): number[] => (steps === undefined ? [] : [steps].flat());
+const lastStep = Math.max(
+  0,
+  ...[...diagram.nodes, ...diagram.edges].flatMap((part) => list(part.step)),
+);
+// Every step of the path plus one quiet beat before it starts over.
+const beats = lastStep + 2;
 const neutral = "#a7b3c4";
 ---
 
 <div class="arch-scroll">
   <figure
     class="arch"
-    style={`--aspect: ${diagram.aspect}; --steps: ${steps}; min-width: ${diagram.minWidth ?? 480}px`}
+    style={`--aspect: ${diagram.aspect}; min-width: ${diagram.minWidth ?? 480}px`}
+    data-beats={beats}
     role="img"
     aria-label={tx(diagram.summary, lang)}
   >
@@ -42,14 +49,15 @@ const neutral = "#a7b3c4";
         const from = byId.get(edge.from);
         const to = byId.get(edge.to);
         if (!from || !to) return null;
+        const points = [[from.x, from.y], ...(edge.via ?? []), [to.x, to.y]]
+          .map(([x, y]) => `${x},${y}`)
+          .join(" ");
+        const steps = list(edge.step);
         return (
-          <line
-            class:list={["edge", { "in-path": edge.step !== undefined }]}
-            x1={from.x}
-            y1={from.y}
-            x2={to.x}
-            y2={to.y}
-            style={edge.step !== undefined ? `--step: ${edge.step}` : undefined}
+          <polyline
+            class:list={["edge", { "in-path": steps.length > 0 }]}
+            points={points}
+            data-steps={steps.length > 0 ? steps.join(" ") : undefined}
           />
         );
       })}
@@ -57,11 +65,12 @@ const neutral = "#a7b3c4";
 
     {diagram.nodes.map((node) => {
       const color = node.color ?? techColor(node.icon) ?? neutral;
-      const step = node.step !== undefined ? ` --step: ${node.step};` : "";
+      const steps = list(node.step);
       return (
         <div
-          class:list={["node", { "in-path": node.step !== undefined }]}
-          style={`left: ${node.x}%; top: ${node.y}%; --node: ${color};${step}`}
+          class="node"
+          style={`left: ${node.x}%; top: ${node.y}%; --node: ${color}`}
+          data-steps={steps.length > 0 ? steps.join(" ") : undefined}
           aria-hidden="true"
         >
           {node.icon && <TechIcon name={node.icon} size={16} />}
@@ -76,11 +85,42 @@ const neutral = "#a7b3c4";
 </div>
 
 <script>
-  // Plays each diagram's highlight only while it is on screen.
+  // Walks each diagram's request path one beat at a time, only while the diagram is on screen.
+  // A single timer per visible diagram swaps a class a few times per cycle, so the page does
+  // not repaint every frame.
+  const BEAT_MS = 800;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const timers = new Map<HTMLElement, number>();
+
+  function play(diagram: HTMLElement) {
+    const beats = Number(diagram.dataset.beats);
+    const parts = Array.from(
+      diagram.querySelectorAll<HTMLElement | SVGElement>("[data-steps]"),
+      (part) => ({ part, steps: (part.dataset.steps ?? "").split(" ").map(Number) }),
+    );
+    let beat = 0;
+    const tick = () => {
+      parts.forEach(({ part, steps }) => part.classList.toggle("lit", steps.includes(beat)));
+      beat = (beat + 1) % beats;
+    };
+    tick();
+    timers.set(diagram, window.setInterval(tick, BEAT_MS));
+  }
+
+  function stop(diagram: HTMLElement) {
+    window.clearInterval(timers.get(diagram));
+    timers.delete(diagram);
+    diagram.querySelectorAll(".lit").forEach((part) => part.classList.remove("lit"));
+  }
+
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => entry.target.classList.toggle("is-playing", entry.isIntersecting));
+    entries.forEach(({ target, isIntersecting }) => {
+      const diagram = target as HTMLElement;
+      if (!isIntersecting) stop(diagram);
+      else if (!timers.has(diagram) && !reducedMotion.matches) play(diagram);
+    });
   });
-  document.querySelectorAll(".arch").forEach((diagram) => observer.observe(diagram));
+  document.querySelectorAll<HTMLElement>(".arch").forEach((diagram) => observer.observe(diagram));
 </script>
 
 <style>
@@ -90,8 +130,6 @@ const neutral = "#a7b3c4";
   }
 
   .arch {
-    --beat: 800ms;
-
     position: relative;
     container-type: inline-size;
     aspect-ratio: var(--aspect);
@@ -137,17 +175,16 @@ const neutral = "#a7b3c4";
   }
 
   .edge {
+    fill: none;
     stroke: rgb(255 255 255 / 0.32);
     stroke-width: 1.5;
     stroke-dasharray: 4 4;
+    stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
   }
 
-  /* The highlight only runs while the diagram is on screen, and jumps between steps
-     (step-end) so the browser repaints a few times per cycle instead of every frame. */
-  .edge.in-path {
-    animation: edge-light calc((var(--steps) + 1) * var(--beat)) step-end infinite paused;
-    animation-delay: calc(var(--step) * var(--beat));
+  .edge.lit {
+    stroke: var(--orange-400);
   }
 
   .node {
@@ -166,14 +203,9 @@ const neutral = "#a7b3c4";
     transform: translate(-50%, -50%);
   }
 
-  .node.in-path {
-    animation: node-light calc((var(--steps) + 1) * var(--beat)) step-end infinite paused;
-    animation-delay: calc(var(--step) * var(--beat));
-  }
-
-  .arch.is-playing .node.in-path,
-  .arch.is-playing .edge.in-path {
-    animation-play-state: running;
+  .node.lit {
+    border-color: var(--orange-400);
+    box-shadow: 0 0 0 3px rgb(242 128 63 / 0.28);
   }
 
   .node :global(.tech-icon) {
@@ -196,40 +228,8 @@ const neutral = "#a7b3c4";
     font-size: 0.8em;
   }
 
-  @keyframes node-light {
-    0%,
-    26%,
-    100% {
-      border-color: color-mix(in srgb, var(--node) 55%, transparent);
-      box-shadow: none;
-    }
-
-    4%,
-    18% {
-      border-color: var(--orange-400);
-      box-shadow: 0 0 0 3px rgb(242 128 63 / 0.28);
-    }
-  }
-
-  @keyframes edge-light {
-    0%,
-    24%,
-    100% {
-      stroke: rgb(255 255 255 / 0.32);
-    }
-
-    2%,
-    16% {
-      stroke: var(--orange-400);
-    }
-  }
-
+  /* Without motion the path stays drawn in orange, so the route still reads. */
   @media (prefers-reduced-motion: reduce) {
-    .edge.in-path,
-    .node.in-path {
-      animation: none;
-    }
-
     .edge.in-path {
       stroke: rgb(242 128 63 / 0.7);
     }
