@@ -27,7 +27,20 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
 
     <div class="grid">
       <div class="text reveal">
-        <p class="lead">{tx(contact.lead, lang)}</p>
+        <p class="lead">
+          {tx(contact.seeking, lang)}
+          <strong class="role-line">
+            {tx(contact.role, lang)
+              .split(" | ")
+              .map((part, i) => (
+                <>
+                  {i > 0 && <span class="sep"> | </span>}
+                  <span class="part">{part}</span>
+                </>
+              ))}
+          </strong>
+        </p>
+        <p class="pitch">{tx(contact.pitch, lang)}</p>
         <div class="actions">
           <a
             class="button-primary"
@@ -38,8 +51,13 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
             <Icon name="mail" size={18} />
             {t("cta.email")}
           </a>
+          <a class="button-secondary" href={profile.linkedin} target="_blank" rel="noopener">
+            <Icon name="linkedin" size={18} />
+            {t("cta.linkedin")}
+          </a>
           <CvButton lang={lang} />
         </div>
+        <p class="note">{tx(contact.note, lang)}</p>
       </div>
 
       <article class="profile-card reveal">
@@ -110,6 +128,32 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
     line-height: 1.35;
   }
 
+  .role-line {
+    display: block;
+    color: var(--accent-text);
+  }
+
+  /* Each title stays whole; a narrow screen breaks the line at the bar. */
+  .part {
+    white-space: nowrap;
+  }
+
+  .sep {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .pitch {
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .note {
+    margin-top: calc(-1 * var(--space-3));
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
   .actions {
     display: flex;
     flex-wrap: wrap;
@@ -127,6 +171,25 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
     color: var(--bg);
     font-weight: 600;
     text-decoration: none;
+  }
+
+  .button-secondary {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-6);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+
+  .button-secondary:hover {
+    border-color: var(--accent);
   }
 
   .profile-card {

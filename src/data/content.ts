@@ -148,7 +148,7 @@ export const sections = {
   },
   contact: {
     eyebrow: { en: "Contact", es: "Contacto" },
-    title: { en: "Let's talk", es: "Hablemos" },
+    title: { en: "Let's work together", es: "Trabajemos juntos" },
   },
 } as const;
 
@@ -1133,8 +1133,20 @@ export const education: EducationItem[] = [
 ];
 
 export const contact = {
-  lead: {
-    en: "If you're building something where Python, data and solid engineering matter, I'd like to hear about it. Email or LinkedIn are the quickest ways to reach me.",
-    es: "Si estás construyendo algo donde importan Python, los datos y la buena ingeniería, me gustaría escucharte. El correo o LinkedIn son la forma más rápida de contactarme.",
+  seeking: {
+    en: "I'm looking for new challenges as a",
+    es: "Estoy en busca de nuevos retos como",
+  },
+  role: {
+    en: "Software Engineer | Backend Python Developer",
+    es: "Ingeniero de Software | Backend Python Developer",
+  },
+  pitch: {
+    en: "If you need someone to design APIs, connect services and take data systems all the way to production, let's talk!",
+    es: "Si buscas a alguien que diseñe APIs, integre servicios y lleve sistemas de datos hasta producción, ¡hablemos!",
+  },
+  note: {
+    en: "Email is the quickest way to reach me.",
+    es: "El correo es la forma más rápida de contactarme.",
   },
 } as const;
