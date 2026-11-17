@@ -160,13 +160,14 @@ const { lang } = Astro.props;
     column-gap: var(--space-8);
   }
 
-  .featured .summary {
-    grid-row: 1 / span 2;
+  /* Summary and highlights side by side; the stack runs the full width underneath. */
+  .featured .highlights {
+    grid-column: 2;
   }
 
-  .featured .highlights,
   .featured .body > :global(.chips) {
-    grid-column: 2;
+    grid-column: 1 / -1;
+    margin-top: var(--space-2);
   }
 
   .summary,
@@ -205,11 +206,13 @@ const { lang } = Astro.props;
       grid-template-columns: 1fr;
     }
 
-    .featured .summary,
     .featured .highlights,
     .featured .body > :global(.chips) {
       grid-column: auto;
-      grid-row: auto;
+    }
+
+    .featured .body > :global(.chips) {
+      margin-top: 0;
     }
   }
 </style>
