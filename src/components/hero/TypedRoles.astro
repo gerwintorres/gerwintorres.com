@@ -10,8 +10,9 @@ const roles = hero.roles.map((role) => tx(role, Astro.props.lang));
 ---
 
 <p class="typed-card mono">
+  <!-- The zsh prompt, as in the macOS terminal. -->
   <span class="prompt" aria-hidden="true">
-    &gt;
+    %
   </span>
   <span class="visually-hidden">{roles.join(" · ")}</span>
   <span class="typed" aria-hidden="true" data-roles={JSON.stringify(roles)}>
