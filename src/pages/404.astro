@@ -1,0 +1,123 @@
+---
+// Served by the host for any address that doesn't exist. The URL doesn't say which
+// language the visitor reads, so the page speaks both.
+import Base from "../layouts/Base.astro";
+import Icon from "../components/ui/Icon.astro";
+import { profile } from "../data/content";
+---
+
+<Base
+  lang="en"
+  title={`Page not found · ${profile.name}`}
+  description="This page doesn't exist. Esta página no existe."
+  noindex
+>
+  <main id="main" class="not-found">
+    <a class="monogram" href="/" aria-label={profile.name}>
+      G<span>T</span>
+    </a>
+    <p class="code mono" aria-hidden="true">
+      404
+    </p>
+    <h1>This page doesn't exist</h1>
+    <p class="es" lang="es">
+      Esta página no existe
+    </p>
+    <div class="actions">
+      <a class="button" href="/">
+        Go to the home page
+        <Icon name="arrow-right" size={18} />
+      </a>
+      <a class="button ghost" href="/es/" lang="es">
+        Ir al inicio en español
+        <Icon name="arrow-right" size={18} />
+      </a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .not-found {
+    display: grid;
+    gap: var(--space-4);
+    place-content: center;
+    justify-items: center;
+    min-height: 100vh;
+    padding: var(--space-8) var(--gutter);
+    background: radial-gradient(circle at 50% 30%, var(--navy-700), var(--bg) 70%);
+    text-align: center;
+  }
+
+  .monogram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    text-decoration: none;
+  }
+
+  .monogram span {
+    color: var(--orange-400);
+  }
+
+  .code {
+    color: var(--accent-text);
+    font-size: clamp(4rem, 14vw, 7rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .es {
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-4);
+  }
+
+  .button {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--space-6);
+    border-radius: var(--radius-pill);
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease);
+  }
+
+  .button:hover {
+    background: var(--accent);
+  }
+
+  .ghost {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .ghost:hover {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+</style>
