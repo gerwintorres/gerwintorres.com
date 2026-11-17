@@ -135,10 +135,10 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
   }
 
   /* The role stays on one line, shrinking a little when the column is narrow
-     (it is about 24 times as wide as its font size). */
+     (it is about 25 times as wide as its font size). */
   .role-line {
     color: var(--accent-text);
-    font-size: min(var(--text-xl), 4cqi);
+    font-size: min(var(--text-xl), 3.85cqi);
     font-weight: 800;
     white-space: nowrap;
   }
@@ -149,7 +149,7 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
   }
 
   /* Where one line would get too small, each title gets its own line and the bar goes away. */
-  @container contact-text (width < 430px) {
+  @container contact-text (width < 450px) {
     .role-line {
       font-size: var(--text-xl);
       white-space: normal;
