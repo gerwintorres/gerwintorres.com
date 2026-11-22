@@ -159,7 +159,11 @@ export const profile = {
   // The name he goes by day to day; the full name stays as the main heading.
   shortName: "Gerwin Torres",
   initials: "GT",
-  role: { en: "Python Backend Engineer", es: "Desarrollador Backend Python" },
+  // Same as the LinkedIn headline.
+  role: {
+    en: "Software Engineer · Python Backend Developer",
+    es: "Ingeniero de Software · Desarrollador Backend Python",
+  },
   location: "Pereira, Colombia",
   email: "ger.lamto@gmail.com",
   linkedin: "https://www.linkedin.com/in/gerwintorres/",
@@ -227,24 +231,25 @@ export const hero = {
 } as const;
 
 export const about = {
+  // Says the same as the short "About" on LinkedIn (profile.md, section 3).
   lead: {
-    en: "Backend engineer focused on turning messy manual processes into systems that run reliably in production.",
-    es: "Ingeniero backend enfocado en convertir procesos manuales y enredados en sistemas que corren de forma confiable en producción.",
+    en: "Python backend engineer who designs backend services and data systems and takes them to production on Azure, GCP and on-premise Linux.",
+    es: "Ingeniero backend Python que diseña servicios backend y sistemas de datos y los lleva a producción en Azure, GCP y servidores Linux on-premise.",
   },
   body: [
     {
-      en: "I work mostly in Python, from the data model to the deployment: REST APIs, integrations with third-party platforms, data pipelines and the infrastructure that keeps them running on GCP, Azure or on-premise Linux servers.",
-      es: "Trabajo sobre todo en Python, desde el modelo de datos hasta el despliegue: APIs REST, integraciones con plataformas externas, flujos de datos y la infraestructura que los mantiene corriendo en GCP, Azure o servidores Linux propios.",
+      en: "For 3 years I've worked with REST APIs in FastAPI, event-driven and clean architectures, SQL, Docker, tests and CI/CD. Among the work I'm proudest of: a nationwide WhatsApp channel for Colombia's National Planning Department, Pereira City Hall's public policy tracking system, oiStock, a multi-tenant ERP SaaS, and automations that made a U.S. insurance agency's lead-to-client conversion 60–70% faster.",
+      es: "Desde hace 3 años trabajo con APIs REST en FastAPI, arquitecturas orientadas a eventos y limpias, SQL, Docker, pruebas y CI/CD. Entre los trabajos de los que más me enorgullezco: un canal nacional de WhatsApp para el Departamento Nacional de Planeación, el sistema de seguimiento de políticas públicas de la Alcaldía de Pereira, oiStock, un ERP SaaS multicliente, y automatizaciones con las que una agencia de seguros de EE. UU. aceleró entre un 60 y un 70 % el paso de lead a cliente.",
     },
     {
-      en: "I also teach Python for data analysis at Universidad Tecnológica de Pereira, and I'm training my English toward C1.",
-      es: "También enseño Python para análisis de datos en la Universidad Tecnológica de Pereira, y estoy entrenando mi inglés hacia C1.",
+      en: "I work AI-first every day with Claude Code, Codex and GitHub Copilot. I also teach Python for data analysis at Universidad Tecnológica de Pereira, and I'm training my English toward C1.",
+      es: "Trabajo AI-first todos los días con Claude Code, Codex y GitHub Copilot. También enseño Python para análisis de datos en la Universidad Tecnológica de Pereira, y estoy entrenando mi inglés hacia C1.",
     },
   ] satisfies Localized[],
   stats: [
     { value: "3+", label: { en: "years building backend", es: "años construyendo backend" } },
     { value: "5", label: { en: "systems in production", es: "sistemas en producción" } },
-    { value: "123", label: { en: "hours teaching Python", es: "horas enseñando Python" } },
+    { value: "155", label: { en: "hours teaching Python", es: "horas enseñando Python" } },
   ],
 } as const;
 
@@ -257,23 +262,23 @@ export const experience: Experience[] = [
     type: { en: "Full-time · Hybrid", es: "Tiempo completo · Híbrido" },
     location: "Pereira, Colombia",
     start: "2024-05",
-    end: null,
+    end: "2026-11",
     summary: {
-      en: "I design, build and deploy software and data systems in Python for public entities and private companies, from the data model to production.",
-      es: "Diseño, construyo y despliego sistemas de software y datos en Python para entidades públicas y empresas, desde el modelo de datos hasta producción.",
+      en: "I design, build and deploy backend and data systems in Python for public entities and private companies, from the data model to production on Azure, GCP and on-premise Linux.",
+      es: "Diseño, construyo y despliego sistemas backend y de datos en Python para entidades públicas y empresas, del modelo de datos a producción en Azure, GCP y servidores Linux on-premise.",
     },
     highlights: [
       {
-        en: "Delivered projects from the first meeting to production for Colombia's National Planning Department, Pereira City Hall and an insurance and tax agency in the United States.",
-        es: "Entregué proyectos desde la primera reunión hasta producción para el Departamento Nacional de Planeación, la Alcaldía de Pereira y una agencia de seguros e impuestos en Estados Unidos.",
+        en: "Delivered projects from the first meeting to production for Colombia's National Planning Department, Pereira City Hall and an insurance and tax agency in the United States, and deployed oiStock, oiDATA's own ERP SaaS.",
+        es: "Entregué proyectos desde la primera reunión hasta producción para el Departamento Nacional de Planeación, la Alcaldía de Pereira y una agencia de seguros e impuestos en Estados Unidos, y desplegué oiStock, el ERP SaaS de oiDATA.",
       },
       {
         en: "Support and continuous improvement for the systems I deliver.",
         es: "Soporte y mejora continua de los sistemas que entrego.",
       },
       {
-        en: "Co-built an ETL pipeline that cut each purchase order of a spare-parts importer from about 28 hours of spreadsheet work to about 5.",
-        es: "Construí con el equipo un pipeline ETL que bajó cada pedido de un importador de repuestos de unas 28 horas de trabajo en Excel a unas 5.",
+        en: "Built with the team a Python ETL pipeline (pandas) for a spare-parts importer; each purchase order went from about 28 hours to about 5.",
+        es: "Construí con el equipo un pipeline ETL en Python (pandas) para un importador de repuestos; cada pedido pasó de unas 28 horas a unas 5.",
       },
     ],
     stack: [
@@ -285,9 +290,13 @@ export const experience: Experience[] = [
       "pandas",
       "Docker",
       "Linux",
+      "Reverse proxy",
       "Azure",
-      "GCP",
+      "Google Cloud",
       "CI/CD",
+      "pytest",
+      "Event-driven",
+      "Multi-tenant SaaS",
     ],
     clients: [
       {
@@ -305,19 +314,30 @@ export const experience: Experience[] = [
         },
         highlights: [
           {
-            en: "Designed and built the service; the first version was in production one week after kickoff.",
-            es: "Diseñé y construí el servicio; la primera versión salió a producción una semana después de arrancar.",
+            en: "Designed and built the service that connects citizens to the DNP's LLM assistant (RAG); the first version was in production one week after kickoff.",
+            es: "Diseñé y construí el servicio que conecta a la ciudadanía con el asistente LLM del DNP (RAG); la primera versión salió a producción una semana después de arrancar.",
           },
           {
-            en: "Signed webhooks, a message queue with one session per citizen, background workers, retries and rate limiting. Phone numbers are never stored.",
-            es: "Webhooks firmados, cola de mensajes con una sesión por ciudadano, procesos en segundo plano, reintentos y límite de envío. Nunca se guardan números de teléfono.",
+            en: "Event-driven backend on Azure: signed webhooks, REST API integrations, Service Bus with one session per citizen, background workers, retries, idempotency and rate limiting. Phone numbers are never stored.",
+            es: "Backend orientado a eventos en Azure: webhooks firmados, integración con APIs REST, Service Bus con una sesión por ciudadano, workers, reintentos, idempotencia y límite de envío. Nunca se guardan números de teléfono.",
           },
           {
-            en: "Infrastructure as code on Azure, secrets in Key Vault, alerts and 90 unit and integration tests in CI.",
-            es: "Infraestructura como código en Azure, secretos en Key Vault, alertas y 90 pruebas unitarias y de integración en CI.",
+            en: "Infrastructure as code with Bicep, secrets in Key Vault, alerts and 90 unit and integration tests in Azure DevOps CI/CD.",
+            es: "Infraestructura como código con Bicep, secretos en Key Vault, alertas y 90 pruebas unitarias y de integración en CI/CD de Azure DevOps.",
           },
         ],
-        stack: ["Event-driven", "REST APIs", "WhatsApp Cloud API", "Azure", "IaC", "CI/CD"],
+        // No language on purpose: the channel is written in C#, which stays out of the profile.
+        stack: [
+          "Event-driven",
+          "REST APIs",
+          "Webhooks",
+          "WhatsApp Cloud API",
+          "Azure Service Bus",
+          "Key Vault",
+          "Bicep",
+          "Azure DevOps",
+          "CI/CD",
+        ],
       },
       {
         id: "pereira-city-hall",
@@ -334,19 +354,56 @@ export const experience: Experience[] = [
         },
         highlights: [
           {
-            en: "Led the capture app and the latest version of the dashboard: 58 officials from 19 city departments report on 14 public policies.",
-            es: "Lideré el aplicativo de registro y la última versión del tablero: 58 funcionarios de 19 secretarías reportan 14 políticas públicas.",
+            en: "Led the Python capture app and public dashboard (Streamlit, pandas, MySQL) that replaced a manual Excel process: 58 officials from 19 city departments report on 14 public policies.",
+            es: "Lideré el aplicativo de registro en Python y el tablero público (Streamlit, pandas, MySQL) que reemplazaron un proceso manual en Excel: 58 funcionarios de 19 secretarías reportan 14 políticas públicas.",
+          },
+          {
+            en: "Authentication with PBKDF2-SHA256 password hashing, session timeouts, role-based access control (RBAC) and parameterized SQL.",
+            es: "Autenticación con contraseñas cifradas con PBKDF2-SHA256, sesiones con expiración, control de acceso por roles (RBAC) y SQL parametrizado.",
           },
           {
             en: "Validation at the point of capture and an automated check that keeps the dashboard and its reports consistent across 106 scenarios.",
             es: "Validación desde el registro y una verificación automática que mantiene tablero e informes consistentes en 106 escenarios.",
           },
           {
-            en: "Migrated the system from Google Cloud to the city's on-premise Linux servers with Docker, Traefik, HTTPS and continuous deployment.",
-            es: "Migré el sistema de Google Cloud a los servidores Linux de la Alcaldía con Docker, Traefik, HTTPS y despliegue continuo.",
+            en: "Migrated it from Cloud Run and Cloud SQL to the city's on-premise Linux servers with Docker, Traefik (HTTPS) and continuous deployment. In testing, caching cut a page from 1.29 s to 0.11 s and 4 replicas served 320 simulated users.",
+            es: "Lo migré de Cloud Run y Cloud SQL a los servidores Linux de la Alcaldía con Docker, Traefik (HTTPS) y despliegue continuo. En pruebas, la caché bajó una página de 1,29 s a 0,11 s y 4 réplicas atendieron 320 usuarios simulados.",
           },
         ],
-        stack: ["Python", "MySQL", "Streamlit", "pandas", "Docker", "Traefik", "Linux"],
+        stack: [
+          "Python",
+          "Streamlit",
+          "pandas",
+          "MySQL",
+          "Docker",
+          "Traefik",
+          "Linux",
+          "Cloud Run",
+          "Cloud SQL",
+        ],
+      },
+      {
+        id: "oistock",
+        tab: "oiStock",
+        name: { en: "oiStock · multi-tenant ERP SaaS", es: "oiStock · ERP SaaS multicliente" },
+        start: "2026-06",
+        end: "2026-10",
+        summary: {
+          en: "oiDATA's own product: an ERP SaaS on Odoo 19 where each client runs on its own PostgreSQL database.",
+          es: "Producto propio de oiDATA: un ERP SaaS sobre Odoo 19 en el que cada cliente tiene su propia base PostgreSQL.",
+        },
+        highlights: [
+          {
+            en: "Deployed it with Docker and a Caddy reverse proxy that routes each subdomain to its tenant, with wildcard TLS.",
+            es: "Lo desplegué con Docker y un proxy inverso con Caddy que enruta cada subdominio a su cliente, con TLS comodín.",
+          },
+          {
+            en: "Backup and restore scripts, and two documented incidents.",
+            es: "Scripts de respaldo y restauración, y dos incidentes documentados.",
+          },
+        ],
+        // The deployment is what counts here; Odoo itself is not presented as a specialty.
+        stack: ["PostgreSQL", "Docker", "Caddy", "Linux", "Odoo"],
       },
       {
         id: "nest",
@@ -366,12 +423,12 @@ export const experience: Experience[] = [
         },
         highlights: [
           {
-            en: "Consolidated about 1,400 client records scattered across several platforms into a single list of 1,200 contacts, kept in sync automatically.",
-            es: "Consolidé unos 1.400 registros de clientes dispersos en varias plataformas en una lista única de 1.200 contactos, sincronizada automáticamente.",
+            en: "Automated workflows with Python, Make and APIs (Monday.com GraphQL, QuickBooks Online, OpenAI): lead-to-client conversion became 60–70% faster.",
+            es: "Automaticé procesos con Python, Make y APIs (GraphQL de Monday.com, QuickBooks Online, OpenAI): el paso de lead a cliente se aceleró entre un 60 y un 70 %.",
           },
           {
-            en: "Automated the sales pipeline on Monday.com with Make and Python, with alerts and tasks triggered by each stage change.",
-            es: "Automaticé el embudo de ventas en Monday.com con Make y Python, con alertas y tareas que se disparan en cada cambio de etapa.",
+            en: "Consolidated about 1,400 client records scattered across several platforms into 1,200 deduplicated contacts, kept in sync automatically.",
+            es: "Consolidé unos 1.400 registros de clientes dispersos en varias plataformas en 1.200 contactos sin duplicados, sincronizados automáticamente.",
           },
           {
             en: "Set up OpenAI models in Make to classify incoming email, and configured Monday's AI sales agent with the agency's knowledge base.",
@@ -384,9 +441,10 @@ export const experience: Experience[] = [
         ],
         stack: [
           "Python",
-          "GraphQL",
-          "REST APIs",
           "Make",
+          "GraphQL",
+          "Monday.com",
+          "QuickBooks Online",
           "OpenAI",
           "Streamlit",
           "pandas",
@@ -417,11 +475,15 @@ export const experience: Experience[] = [
         es: "Desarrollé endpoints en FastAPI para publicar los archivos de transcripción y migré archivos históricos a la plataforma.",
       },
       {
+        en: "Contributed functional parts of the platform's web frontend in TypeScript.",
+        es: "Aporté partes funcionales del frontend web de la plataforma en TypeScript.",
+      },
+      {
         en: "Contributed to the first implementation of OpenAI Whisper to improve transcription accuracy.",
         es: "Participé en la primera implementación de Whisper de OpenAI para mejorar la precisión de la transcripción.",
       },
     ],
-    stack: ["Python", "FastAPI", "PySide", "QML", "Whisper", "Git"],
+    stack: ["Python", "FastAPI", "REST APIs", "PySide", "QML", "TypeScript", "Whisper", "Git"],
   },
   {
     id: "utp",
@@ -430,15 +492,15 @@ export const experience: Experience[] = [
     type: { en: "Contract · On-site", es: "Contrato · Presencial" },
     location: "Pereira, Colombia",
     start: "2025-05",
-    end: null,
+    end: "2026-11",
     summary: {
       en: "Python module of the Diplomado en Análisis de Datos con Excel, R y Python, at Educación Continua of the Facultad de Ciencias Empresariales (FACIEM).",
       es: "Módulo de Python del Diplomado en Análisis de Datos con Excel, R y Python, de Educación Continua de la Facultad de Ciencias Empresariales (FACIEM).",
     },
     highlights: [
       {
-        en: "Four cohorts completed (31 sessions, 123 hours) and a fifth in progress.",
-        es: "Cuatro cohortes terminadas (31 sesiones, 123 horas) y una quinta en curso.",
+        en: "155 hours across five cohorts, with about 100 students.",
+        es: "155 horas en cinco cohortes, con cerca de 100 estudiantes.",
       },
       {
         en: "Data cleaning with pandas, exploratory analysis, visualization, Streamlit apps and reproducible reports with Quarto.",
@@ -568,19 +630,29 @@ export const projects: Project[] = [
     },
     highlights: [
       {
-        en: "Signed webhooks, a message queue with one session per citizen, background workers, retries and rate limiting.",
-        es: "Webhooks firmados, cola de mensajes con una sesión por ciudadano, procesos en segundo plano, reintentos y límite de envío.",
+        en: "Signed webhooks, Service Bus with one session per citizen, background workers, retries, idempotency and rate limiting.",
+        es: "Webhooks firmados, Service Bus con una sesión por ciudadano, workers, reintentos, idempotencia y límite de envío.",
       },
       {
         en: "Privacy by design: phone numbers are never stored and the conversation history expires after 48 hours.",
         es: "Privacidad desde el diseño: nunca se guardan números de teléfono y el historial se borra a las 48 horas.",
       },
       {
-        en: "Infrastructure as code on Azure, secrets in Key Vault, alerts and 90 unit and integration tests in CI.",
-        es: "Infraestructura como código en Azure, secretos en Key Vault, alertas y 90 pruebas unitarias y de integración en CI.",
+        en: "Infrastructure as code with Bicep, secrets in Key Vault, alerts and 90 unit and integration tests in Azure DevOps CI/CD.",
+        es: "Infraestructura como código con Bicep, secretos en Key Vault, alertas y 90 pruebas unitarias y de integración en CI/CD de Azure DevOps.",
       },
     ],
-    stack: ["Event-driven", "REST APIs", "WhatsApp Cloud API", "Azure", "IaC", "CI/CD"],
+    stack: [
+      "Event-driven",
+      "REST APIs",
+      "Webhooks",
+      "WhatsApp Cloud API",
+      "Azure Service Bus",
+      "Key Vault",
+      "Bicep",
+      "Azure DevOps",
+      "CI/CD",
+    ],
     links: [],
   },
   {
@@ -588,8 +660,8 @@ export const projects: Project[] = [
     architecture: {
       aspect: 1.75,
       summary: {
-        en: "A client calls the FastAPI service with a JWT; the domain estimates demand with Python's statistics module and a SQLAlchemy repository stores the results in PostgreSQL. It runs on Google Cloud Run and every change goes through GitHub Actions.",
-        es: "Un cliente llama al servicio en FastAPI con un JWT; el dominio estima la demanda con el módulo statistics de Python y un repositorio con SQLAlchemy guarda los resultados en PostgreSQL. Corre en Google Cloud Run y cada cambio pasa por GitHub Actions.",
+        en: "A client calls the FastAPI service; the domain estimates demand with Python's statistics module and a SQLAlchemy repository stores the results in PostgreSQL. Cloud Build packs it into a multi-stage Docker image that runs on Google Cloud Run.",
+        es: "Un cliente llama al servicio en FastAPI; el dominio estima la demanda con el módulo statistics de Python y un repositorio con SQLAlchemy guarda los resultados en PostgreSQL. Cloud Build lo empaqueta en una imagen Docker multi-stage que corre en Google Cloud Run.",
       },
       groups: [
         {
@@ -606,7 +678,7 @@ export const projects: Project[] = [
         {
           id: "client",
           label: { en: "Client", es: "Cliente" },
-          tech: "HTTP + JWT",
+          tech: "HTTP",
           icon: "User",
           x: 12,
           y: 30,
@@ -643,7 +715,7 @@ export const projects: Project[] = [
           step: 4,
         },
         { id: "csv", label: "CSV", tech: "pandas", icon: "pandas", x: 12, y: 72, color: "#e70488" },
-        { id: "ci", label: "CI", tech: "GitHub Actions", icon: "GitHub Actions", x: 87, y: 30 },
+        { id: "ci", label: "Build", tech: "Cloud Build", icon: "Cloud Build", x: 87, y: 30 },
       ],
       edges: [
         { from: "client", to: "api", step: 1 },
@@ -653,7 +725,7 @@ export const projects: Project[] = [
         { from: "csv", to: "api" },
       ],
     },
-    kind: { en: "Personal project", es: "Proyecto personal" },
+    kind: { en: "Personal project · in progress", es: "Proyecto personal · en desarrollo" },
     title: "reorder",
     summary: {
       en: "An API that estimates weekly demand per product from its sales history, with the rule and inputs behind each estimate.",
@@ -665,18 +737,23 @@ export const projects: Project[] = [
         es: "Rehace en abierto el motor de estimación de demanda que construí para un cliente, con datos sintéticos.",
       },
       {
-        en: "Domain logic kept apart from the framework, tests against a real PostgreSQL database and documented decisions.",
-        es: "Lógica de dominio separada del framework, pruebas contra una base PostgreSQL real y decisiones documentadas.",
+        en: "Clean Architecture with a test that keeps the domain independent of the framework, tests against a real PostgreSQL database and documented decisions.",
+        es: "Arquitectura limpia con una prueba que aísla el dominio del framework, pruebas contra una base PostgreSQL real y decisiones documentadas.",
+      },
+      {
+        en: "Next: user accounts with JWT and CI on GitHub Actions.",
+        es: "Lo que sigue: cuentas de usuario con JWT e integración continua en GitHub Actions.",
       },
     ],
     stack: [
       "Python",
       "FastAPI",
+      "Pydantic",
       "PostgreSQL",
       "SQLAlchemy",
       "Alembic",
       "pytest",
-      "Docker",
+      "Docker (multi-stage)",
       "Cloud Run",
     ],
     links: [
@@ -805,11 +882,21 @@ export const projects: Project[] = [
         es: "Validación desde el registro y una verificación automática que mantiene tablero e informes consistentes en 106 escenarios.",
       },
       {
-        en: "Runs on the city's on-premise Linux servers with Docker, Traefik and continuous deployment.",
-        es: "Corre en los servidores Linux de la Alcaldía con Docker, Traefik y despliegue continuo.",
+        en: "Moved from Cloud Run and Cloud SQL to the city's on-premise Linux servers, with Docker, Traefik and continuous deployment.",
+        es: "Pasó de Cloud Run y Cloud SQL a los servidores Linux de la Alcaldía, con Docker, Traefik y despliegue continuo.",
       },
     ],
-    stack: ["Python", "MySQL", "Streamlit", "pandas", "Docker", "Traefik", "Linux"],
+    stack: [
+      "Python",
+      "Streamlit",
+      "pandas",
+      "MySQL",
+      "Docker",
+      "Traefik",
+      "Linux",
+      "Cloud Run",
+      "Cloud SQL",
+    ],
     links: [
       {
         label: { en: "View dashboard", es: "Ver tablero" },
@@ -1058,13 +1145,29 @@ export const projects: Project[] = [
 
 /** Ordered like the layers of a backend service, from the API down to the infrastructure. */
 export const skills: SkillGroup[] = [
-  { code: "API", layer: "APIs", items: ["REST", "FastAPI", "Webhooks", "GraphQL"] },
+  {
+    code: "API",
+    layer: "APIs",
+    items: [
+      "REST",
+      "FastAPI",
+      "Pydantic",
+      "OpenAPI (Swagger)",
+      "Webhooks",
+      "GraphQL",
+      "OAuth 2.0",
+      "RBAC",
+    ],
+  },
   {
     code: "SRV",
     layer: { en: "Services", es: "Servicios" },
     items: [
       "Python",
+      { en: "Clean Architecture", es: "Arquitectura limpia" },
+      "SOLID",
       { en: "Event-driven design", es: "Diseño orientado a eventos" },
+      { en: "Multi-tenant SaaS", es: "SaaS multicliente" },
       { en: "LLM integrations", es: "Integración de LLM" },
     ],
   },
@@ -1080,7 +1183,16 @@ export const skills: SkillGroup[] = [
   {
     code: "DB",
     layer: { en: "Data", es: "Datos" },
-    items: ["PostgreSQL", "MySQL", "SQL", "pandas", "ETL"],
+    items: [
+      "PostgreSQL",
+      "MySQL",
+      "SQL",
+      "SQLAlchemy",
+      "Cloud SQL",
+      "NoSQL (Azure Table Storage)",
+      "pandas",
+      "ETL",
+    ],
   },
   {
     code: "QA",
@@ -1088,18 +1200,37 @@ export const skills: SkillGroup[] = [
     items: [
       "pytest",
       { en: "Integration tests", es: "Pruebas de integración" },
+      { en: "Load testing", es: "Pruebas de carga" },
+      { en: "Performance and caching", es: "Rendimiento y caché" },
+      "OpenTelemetry",
       { en: "Code review", es: "Revisión de código" },
     ],
   },
   {
     code: "OPS",
     layer: { en: "Infrastructure", es: "Infraestructura" },
-    items: ["Docker", "Linux", "Traefik", "CI/CD", "GitHub Actions", "IaC", "GCP", "Azure"],
+    items: [
+      "Docker (multi-stage)",
+      "Linux",
+      { en: "Reverse proxy (Traefik, Caddy)", es: "Proxy inverso (Traefik, Caddy)" },
+      "CI/CD",
+      "GitHub Actions",
+      "IaC",
+      "GCP",
+      "Azure",
+    ],
   },
   {
     code: "+",
     layer: { en: "Other", es: "Otros" },
-    items: ["Git", "Streamlit", "Quarto", "Make", "Monday.com"],
+    items: [
+      "Git",
+      { en: "TypeScript (basic)", es: "TypeScript (básico)" },
+      "Streamlit",
+      "Quarto",
+      "Make",
+      "Monday.com",
+    ],
   },
 ];
 

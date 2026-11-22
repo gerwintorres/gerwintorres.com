@@ -1,5 +1,6 @@
 // Which logo, and which color, represents each technology on the site.
 import {
+  siCaddy,
   siDocker,
   siFastapi,
   siGit,
@@ -15,17 +16,23 @@ import {
   siMake,
   siMysql,
   siNodedotjs,
+  siOdoo,
   siOpenapiinitiative,
+  siOpentelemetry,
   siPandas,
   siPostgresql,
+  siPydantic,
   siPytest,
   siPython,
   siQt,
+  siQuickbooks,
   siRailway,
   siQuarto,
   siSqlalchemy,
   siStreamlit,
+  siSwagger,
   siTraefikproxy,
+  siTypescript,
   siWhatsapp,
 } from "simple-icons";
 import type { IconName } from "../components/ui/Icon.astro";
@@ -75,6 +82,18 @@ export const brands: Record<string, BrandIcon> = {
   "Cloud Storage": siGooglecloudstorage,
   "Google Cloud Storage": siGooglecloudstorage,
   "Cloud Run": siGooglecloud,
+  "Cloud SQL": siGooglecloud,
+  "Cloud Build": siGooglecloud,
+  "Azure DevOps": azure,
+  Pydantic: siPydantic,
+  "OpenAPI (Swagger)": siSwagger,
+  Caddy: siCaddy,
+  Odoo: siOdoo,
+  TypeScript: siTypescript,
+  "TypeScript (basic)": siTypescript,
+  "QuickBooks Online": siQuickbooks,
+  OpenTelemetry: siOpentelemetry,
+  "Docker (multi-stage)": siDocker,
 };
 
 // Concepts and products without a free logo.
@@ -103,6 +122,18 @@ export const generic: Record<string, IconName> = {
   "CI/CD": "loop",
   IaC: "code",
   "Monday.com": "board",
+  "Key Vault": "key",
+  Bicep: "code",
+  "OAuth 2.0": "lock",
+  RBAC: "lock",
+  "Clean Architecture": "code",
+  SOLID: "code",
+  "Multi-tenant SaaS": "cloud",
+  "Reverse proxy": "pipeline",
+  "Reverse proxy (Traefik, Caddy)": "pipeline",
+  "NoSQL (Azure Table Storage)": "database",
+  "Load testing": "chart",
+  "Performance and caching": "gear",
 };
 
 /** Brand colors too dark to read on the navy background fall back to the accent. */
