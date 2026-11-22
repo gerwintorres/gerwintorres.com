@@ -20,7 +20,19 @@ const year = new Date().getFullYear();
       </span>
       <div>
         <p class="name">{profile.name}</p>
-        <p class="role">{tx(profile.role, lang)}</p>
+        <p class="role">
+          {tx(profile.role, lang)
+            .split(" · ")
+            .map((part, i, parts) => (
+              <>
+                {i > 0 && " "}
+                <span>
+                  {part}
+                  {i < parts.length - 1 && " ·"}
+                </span>
+              </>
+            ))}
+        </p>
       </div>
     </div>
     <SocialLinks lang={lang} />
@@ -85,6 +97,11 @@ const year = new Date().getFullYear();
 
   .name {
     font-weight: 700;
+  }
+
+  /* The role breaks at the dot, never inside a part. */
+  .role span {
+    white-space: nowrap;
   }
 
   .role {

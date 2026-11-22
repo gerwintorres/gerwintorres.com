@@ -72,7 +72,19 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
           loading="lazy"
         />
         <h3>{profile.name}</h3>
-        <p class="role">{tx(profile.role, lang)}</p>
+        <p class="role">
+          {tx(profile.role, lang)
+            .split(" · ")
+            .map((part, i, parts) => (
+              <>
+                {i > 0 && " "}
+                <span>
+                  {part}
+                  {i < parts.length - 1 && " ·"}
+                </span>
+              </>
+            ))}
+        </p>
         <ul class="rows" role="list">
           <li>
             <Icon name="mail" size={18} />
@@ -243,6 +255,11 @@ const handle = (url: string): string => url.replace(/^https:\/\/(www\.)?/, "").r
   h3 {
     font-size: var(--text-lg);
     font-weight: 800;
+  }
+
+  /* The role breaks at the dot, never inside a part. */
+  .role span {
+    white-space: nowrap;
   }
 
   .role {
